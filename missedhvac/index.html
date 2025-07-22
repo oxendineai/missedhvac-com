@@ -32,305 +32,6 @@
             "price": "199",
             "priceCurrency": "USD",
             "priceValidUntil": "2025-12-31"
-        }
-        
-        /* Chat Widget Styles */
-        .chat-widget {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        }
-        
-        .chat-button {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 24px;
-            transition: all 0.3s ease;
-            animation: pulse 2s infinite;
-        }
-        
-        .chat-button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(13, 148, 136, 0.4);
-        }
-        
-        @keyframes pulse {
-            0% { box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3); }
-            50% { box-shadow: 0 4px 12px rgba(13, 148, 136, 0.6); }
-            100% { box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3); }
-        }
-        
-        .chat-window {
-            position: absolute;
-            bottom: 70px;
-            right: 0;
-            width: 350px;
-            height: 500px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-            display: none;
-            flex-direction: column;
-            overflow: hidden;
-        }
-        
-        .chat-header {
-            background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
-            color: white;
-            padding: 16px;
-            text-align: center;
-            font-weight: bold;
-        }
-        
-        .chat-header h3 {
-            margin: 0;
-            font-size: 16px;
-        }
-        
-        .chat-header p {
-            margin: 4px 0 0 0;
-            font-size: 12px;
-            opacity: 0.9;
-        }
-        
-        .chat-messages {
-            flex: 1;
-            padding: 16px;
-            overflow-y: auto;
-            background: #f8f9fa;
-        }
-        
-        .chat-message {
-            margin-bottom: 12px;
-            animation: fadeInUp 0.3s ease;
-        }
-        
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        // Chat Widget Functionality
-        let chatOpen = false;
-        let messageCount = 0;
-        
-        function toggleChat() {
-            const chatWindow = document.getElementById('chatWindow');
-            const chatButton = document.getElementById('chatButton');
-            
-            chatOpen = !chatOpen;
-            
-            if (chatOpen) {
-                chatWindow.style.display = 'flex';
-                chatButton.innerHTML = '✕';
-                chatButton.style.background = '#ef4444';
-                
-                // Track chat widget opening
-                va('track', 'chat_widget_opened');
-                
-                // Show typing indicator after a moment
-                if (messageCount === 1) {
-                    setTimeout(() => {
-                        addBotMessage("I see you're interested in our AI chat! This is exactly what your customers would experience on your website. Pretty cool, right? 😊");
-                    }, 2000);
-                }
-            } else {
-                chatWindow.style.display = 'none';
-                chatButton.innerHTML = '💬';
-                chatButton.style.background = 'linear-gradient(135deg, #0d9488 0%, #0f766e 100%)';
-            }
-        }
-        
-        function sendMessage() {
-            const input = document.getElementById('chatInput');
-            const message = input.value.trim();
-            
-            if (message) {
-                addUserMessage(message);
-                input.value = '';
-                
-                // Track message sent
-                va('track', 'chat_message_sent', {message: message});
-                
-                // Simulate AI response
-                setTimeout(() => {
-                    generateAIResponse(message);
-                }, 1000 + Math.random() * 1000);
-            }
-        }
-        
-        function sendQuickReply(message) {
-            addUserMessage(message);
-            
-            // Track quick reply usage
-            va('track', 'quick_reply_used', {reply: message});
-            
-            setTimeout(() => {
-                generateAIResponse(message);
-            }, 800);
-        }
-        
-        function addUserMessage(message) {
-            const messagesContainer = document.getElementById('chatMessages');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'chat-message';
-            messageDiv.innerHTML = `<div class="message-user">${message}</div>`;
-            messagesContainer.appendChild(messageDiv);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            messageCount++;
-        }
-        
-        function addBotMessage(message) {
-            const messagesContainer = document.getElementById('chatMessages');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'chat-message';
-            messageDiv.innerHTML = `<div class="message-bot">${message}</div>`;
-            messagesContainer.appendChild(messageDiv);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            messageCount++;
-        }
-        
-        function generateAIResponse(userMessage) {
-            const lowerMessage = userMessage.toLowerCase();
-            let response = '';
-            
-            if (lowerMessage.includes('emergency') || lowerMessage.includes('urgent')) {
-                response = "I understand this is urgent! I can immediately connect you with our emergency HVAC technician. What's your location and phone number? Our tech can be there within 2 hours. ⚡";
-            } else if (lowerMessage.includes('estimate') || lowerMessage.includes('quote') || lowerMessage.includes('price') || lowerMessage.includes('cost')) {
-                response = "I'd be happy to provide an estimate! For AC repair, typical costs range from $150-$500 depending on the issue. Can you tell me: 1) What type of system? 2) What's the problem? 3) Your zip code? I can give you a more accurate quote! 💰";
-            } else if (lowerMessage.includes('schedule') || lowerMessage.includes('appointment') || lowerMessage.includes('book')) {
-                response = "Perfect! I can schedule you right now. I have availability: Tomorrow 9-11am, 2-4pm, or Thursday 10am-12pm. What works best for you? I'll send confirmation via text! 📅";
-            } else if (lowerMessage.includes('ac') || lowerMessage.includes('air') || lowerMessage.includes('cooling')) {
-                response = "AC issues are the worst! Is your system: 1) Not cooling at all, 2) Cooling poorly, 3) Making strange noises, or 4) Something else? I can diagnose the likely issue and get you scheduled for repair. Most AC problems are fixable same-day! ❄️";
-            } else if (lowerMessage.includes('heat') || lowerMessage.includes('furnace') || lowerMessage.includes('warm')) {
-                response = "Heating problems need quick attention! Is your furnace: 1) Not turning on, 2) Heating unevenly, 3) Making noise, or 4) Blowing cold air? Based on your answer, I can give you troubleshooting tips and schedule a tech if needed. 🔥";
-            } else if (lowerMessage.includes('demo') || lowerMessage.includes('test') || lowerMessage.includes('trial')) {
-                response = "You're experiencing our AI chat right now! This is exactly what your customers would see on your website. Pretty smart, right? Want to start your 14-day free trial? I can set that up instantly! 🚀";
-            } else {
-                const responses = [
-                    "I'm here to help with all your HVAC needs! Are you looking for emergency repair, routine maintenance, or a new system installation? 🔧",
-                    "As your 24/7 HVAC assistant, I can help schedule appointments, provide estimates, and answer technical questions. What can I do for you? ⚙️",
-                    "Great question! I'm trained on thousands of HVAC scenarios. Whether it's AC, heating, or air quality issues, I can help diagnose and solve your problem. What's going on? 🏠"
-                ];
-                response = responses[Math.floor(Math.random() * responses.length)];
-            }
-            
-            // Add some personality occasionally
-            if (messageCount > 3 && Math.random() < 0.3) {
-                response += "\n\nBy the way, I never sleep! I'm here 24/7 to help your customers. Your competitors using basic contact forms are missing out! 😴";
-            }
-            
-            addBotMessage(response);
-        }
-        
-        // Auto-open chat widget after 10 seconds for demo
-        setTimeout(() => {
-            if (!chatOpen) {
-                const chatButton = document.getElementById('chatButton');
-                chatButton.style.animation = 'pulse 1s ease-in-out 3';
-                
-                // Add notification badge
-                chatButton.innerHTML = '💬<span style="position: absolute; top: -5px; right: -5px; background: #ef4444; color: white; border-radius: 50%; width: 20px; height: 20px; font-size: 12px; display: flex; align-items: center; justify-content: center;">1</span>';
-                
-                setTimeout(() => {
-                    addBotMessage("👋 Hey there! I noticed you're checking out MissedHVAC.com. I'm a demo of the AI chat your customers would see. Want to try talking to me?");
-                    
-                    // Add a gentle notification sound (optional)
-                    va('track', 'chat_auto_message_shown');
-                }, 1000);
-            }
-        }, 10000);
-        
-        .message-bot {
-            background: white;
-            padding: 12px;
-            border-radius: 12px 12px 12px 4px;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-            position: relative;
-        }
-        
-        .message-bot::before {
-            content: '🤖';
-            position: absolute;
-            left: -25px;
-            top: 8px;
-            font-size: 16px;
-        }
-        
-        .message-user {
-            background: #0d9488;
-            color: white;
-            padding: 12px;
-            border-radius: 12px 12px 4px 12px;
-            margin-left: 50px;
-            text-align: right;
-        }
-        
-        .chat-input-area {
-            padding: 16px;
-            background: white;
-            border-top: 1px solid #e5e7eb;
-        }
-        
-        .chat-input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #d1d5db;
-            border-radius: 20px;
-            outline: none;
-            font-size: 14px;
-        }
-        
-        .chat-input:focus {
-            border-color: #0d9488;
-        }
-        
-        .quick-replies {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 12px;
-        }
-        
-        .quick-reply {
-            background: #f3f4f6;
-            border: 1px solid #d1d5db;
-            padding: 6px 12px;
-            border-radius: 16px;
-            font-size: 12px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .quick-reply:hover {
-            background: #0d9488;
-            color: white;
-            border-color: #0d9488;
-        }
-        
-        /* Mobile adjustments */
-        @media (max-width: 768px) {
-            .chat-window {
-                width: 300px;
-                height: 450px;
-            }
         },
         "aggregateRating": {
             "@type": "AggregateRating",
@@ -995,7 +696,167 @@
             opacity: 1;
         }
         
-        /* Responsive */
+        /* Chat Widget Styles */
+        .chat-widget {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        .chat-button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+        
+        .chat-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(13, 148, 136, 0.4);
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3); }
+            50% { box-shadow: 0 4px 12px rgba(13, 148, 136, 0.6); }
+            100% { box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3); }
+        }
+        
+        .chat-window {
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+            width: 350px;
+            height: 500px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .chat-header {
+            background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+            color: white;
+            padding: 16px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .chat-header h3 {
+            margin: 0;
+            font-size: 16px;
+        }
+        
+        .chat-header p {
+            margin: 4px 0 0 0;
+            font-size: 12px;
+            opacity: 0.9;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+            background: #f8f9fa;
+        }
+        
+        .chat-message {
+            margin-bottom: 12px;
+            animation: fadeInUp 0.3s ease;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .message-bot {
+            background: white;
+            padding: 12px;
+            border-radius: 12px 12px 12px 4px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        
+        .message-bot::before {
+            content: '🤖';
+            position: absolute;
+            left: -25px;
+            top: 8px;
+            font-size: 16px;
+        }
+        
+        .message-user {
+            background: #0d9488;
+            color: white;
+            padding: 12px;
+            border-radius: 12px 12px 4px 12px;
+            margin-left: 50px;
+            text-align: right;
+        }
+        
+        .chat-input-area {
+            padding: 16px;
+            background: white;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .chat-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 20px;
+            outline: none;
+            font-size: 14px;
+        }
+        
+        .chat-input:focus {
+            border-color: #0d9488;
+        }
+        
+        .quick-replies {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+        
+        .quick-reply {
+            background: #f3f4f6;
+            border: 1px solid #d1d5db;
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .quick-reply:hover {
+            background: #0d9488;
+            color: white;
+            border-color: #0d9488;
+        }
+        
+        /* Mobile adjustments */
         @media (max-width: 768px) {
             .hero h1 {
                 font-size: 2rem;
@@ -1033,6 +894,11 @@
             
             .benefit-item {
                 justify-content: center;
+            }
+            
+            .chat-window {
+                width: 300px;
+                height: 450px;
             }
         }
     </style>
@@ -1497,6 +1363,137 @@
     </div>
     
     <script>
+        // Chat Widget Functionality
+        let chatOpen = false;
+        let messageCount = 0;
+        
+        function toggleChat() {
+            const chatWindow = document.getElementById('chatWindow');
+            const chatButton = document.getElementById('chatButton');
+            
+            chatOpen = !chatOpen;
+            
+            if (chatOpen) {
+                chatWindow.style.display = 'flex';
+                chatButton.innerHTML = '✕';
+                chatButton.style.background = '#ef4444';
+                
+                // Track chat widget opening
+                va('track', 'chat_widget_opened');
+                
+                // Show typing indicator after a moment
+                if (messageCount === 1) {
+                    setTimeout(() => {
+                        addBotMessage("I see you're interested in our AI chat! This is exactly what your customers would experience on your website. Pretty cool, right? 😊");
+                    }, 2000);
+                }
+            } else {
+                chatWindow.style.display = 'none';
+                chatButton.innerHTML = '💬';
+                chatButton.style.background = 'linear-gradient(135deg, #0d9488 0%, #0f766e 100%)';
+            }
+        }
+        
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (message) {
+                addUserMessage(message);
+                input.value = '';
+                
+                // Track message sent
+                va('track', 'chat_message_sent', {message: message});
+                
+                // Simulate AI response
+                setTimeout(() => {
+                    generateAIResponse(message);
+                }, 1000 + Math.random() * 1000);
+            }
+        }
+        
+        function sendQuickReply(message) {
+            addUserMessage(message);
+            
+            // Track quick reply usage
+            va('track', 'quick_reply_used', {reply: message});
+            
+            setTimeout(() => {
+                generateAIResponse(message);
+            }, 800);
+        }
+        
+        function addUserMessage(message) {
+            const messagesContainer = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'chat-message';
+            messageDiv.innerHTML = `<div class="message-user">${message}</div>`;
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            messageCount++;
+        }
+        
+        function addBotMessage(message) {
+            const messagesContainer = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'chat-message';
+            messageDiv.innerHTML = `<div class="message-bot">${message}</div>`;
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            messageCount++;
+        }
+        
+        function generateAIResponse(userMessage) {
+            const lowerMessage = userMessage.toLowerCase();
+            let response = '';
+            
+            if (lowerMessage.includes('emergency') || lowerMessage.includes('urgent')) {
+                response = "I understand this is urgent! I can immediately connect you with our emergency HVAC technician. What's your location and phone number? Our tech can be there within 2 hours. ⚡";
+            } else if (lowerMessage.includes('estimate') || lowerMessage.includes('quote') || lowerMessage.includes('price') || lowerMessage.includes('cost')) {
+                response = "I'd be happy to provide an estimate! For AC repair, typical costs range from $150-$500 depending on the issue. Can you tell me: 1) What type of system? 2) What's the problem? 3) Your zip code? I can give you a more accurate quote! 💰";
+            } else if (lowerMessage.includes('schedule') || lowerMessage.includes('appointment') || lowerMessage.includes('book')) {
+                response = "Perfect! I can schedule you right now. I have availability: Tomorrow 9-11am, 2-4pm, or Thursday 10am-12pm. What works best for you? I'll send confirmation via text! 📅";
+            } else if (lowerMessage.includes('ac') || lowerMessage.includes('air') || lowerMessage.includes('cooling')) {
+                response = "AC issues are the worst! Is your system: 1) Not cooling at all, 2) Cooling poorly, 3) Making strange noises, or 4) Something else? I can diagnose the likely issue and get you scheduled for repair. Most AC problems are fixable same-day! ❄️";
+            } else if (lowerMessage.includes('heat') || lowerMessage.includes('furnace') || lowerMessage.includes('warm')) {
+                response = "Heating problems need quick attention! Is your furnace: 1) Not turning on, 2) Heating unevenly, 3) Making noise, or 4) Blowing cold air? Based on your answer, I can give you troubleshooting tips and schedule a tech if needed. 🔥";
+            } else if (lowerMessage.includes('demo') || lowerMessage.includes('test') || lowerMessage.includes('trial')) {
+                response = "You're experiencing our AI chat right now! This is exactly what your customers would see on your website. Pretty smart, right? Want to start your 14-day free trial? I can set that up instantly! 🚀";
+            } else {
+                const responses = [
+                    "I'm here to help with all your HVAC needs! Are you looking for emergency repair, routine maintenance, or a new system installation? 🔧",
+                    "As your 24/7 HVAC assistant, I can help schedule appointments, provide estimates, and answer technical questions. What can I do for you? ⚙️",
+                    "Great question! I'm trained on thousands of HVAC scenarios. Whether it's AC, heating, or air quality issues, I can help diagnose and solve your problem. What's going on? 🏠"
+                ];
+                response = responses[Math.floor(Math.random() * responses.length)];
+            }
+            
+            // Add some personality occasionally
+            if (messageCount > 3 && Math.random() < 0.3) {
+                response += "\n\nBy the way, I never sleep! I'm here 24/7 to help your customers. Your competitors using basic contact forms are missing out! 😴";
+            }
+            
+            addBotMessage(response);
+        }
+        
+        // Auto-open chat widget after 10 seconds for demo
+        setTimeout(() => {
+            if (!chatOpen) {
+                const chatButton = document.getElementById('chatButton');
+                chatButton.style.animation = 'pulse 1s ease-in-out 3';
+                
+                // Add notification badge
+                chatButton.innerHTML = '💬<span style="position: absolute; top: -5px; right: -5px; background: #ef4444; color: white; border-radius: 50%; width: 20px; height: 20px; font-size: 12px; display: flex; align-items: center; justify-content: center;">1</span>';
+                
+                setTimeout(() => {
+                    addBotMessage("👋 Hey there! I noticed you're checking out MissedHVAC.com. I'm a demo of the AI chat your customers would see. Want to try talking to me?");
+                    
+                    // Add a gentle notification sound (optional)
+                    va('track', 'chat_auto_message_shown');
+                }, 1000);
+            }
+        }, 10000);
+        
         // ROI Calculator
         function calculateROI() {
             const missedCalls = parseInt(document.getElementById('missedCalls').value) || 0;
