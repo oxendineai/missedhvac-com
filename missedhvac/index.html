@@ -1227,9 +1227,38 @@
             button.textContent = 'Setting up your trial...';
             button.disabled = true;
             
+            // Track the form submission
+            va('track', 'trial_form_submitted', {email: email});
+            
+            // TEMPORARY: Until n8n is set up, just redirect to pricing
+            // Replace this section when n8n webhook is ready
+            
+            // Simulate processing time
+            setTimeout(() => {
+                // Reset button
+                button.textContent = originalText;
+                button.disabled = false;
+                
+                // Show success message and redirect to pricing
+                alert('Thanks! Please choose your plan below to continue with your 14-day free trial.');
+                
+                // Scroll to pricing section
+                document.getElementById('pricing').scrollIntoView({ behavior: 'smooth' });
+                
+                // Optionally store email in local storage for later use
+                try {
+                    sessionStorage.setItem('trial_email', email);
+                } catch(e) {
+                    // Ignore if storage not available
+                }
+            }, 2000);
+            
+            /* 
+            UNCOMMENT WHEN N8N IS READY:
+            
             try {
-                // Send to n8n webhook - REPLACE WITH YOUR ACTUAL WEBHOOK URL
-                const response = await fetch('YOUR_N8N_WEBHOOK_URL', {
+                // Send to n8n webhook
+                const response = await fetch('YOUR_ACTUAL_N8N_WEBHOOK_URL', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -1245,10 +1274,7 @@
                 if (response.ok) {
                     const result = await response.json();
                     
-                    // Track the form submission
-                    va('track', 'trial_form_submitted', {email: email});
-                    
-                    // Redirect to Stripe checkout (will be returned from n8n)
+                    // Redirect to Stripe checkout
                     if (result.checkoutUrl) {
                         window.location.href = result.checkoutUrl;
                     } else {
@@ -1270,6 +1296,7 @@
                 // Fallback - scroll to pricing
                 document.getElementById('pricing').scrollIntoView({ behavior: 'smooth' });
             }
+            */
         }
     </script>
 </body>
