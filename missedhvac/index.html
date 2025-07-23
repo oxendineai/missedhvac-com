@@ -709,10 +709,10 @@
             width: 60px;
             height: 60px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+            background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
             border: none;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
+            box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -724,13 +724,13 @@
         
         .chat-button:hover {
             transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(13, 148, 136, 0.4);
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
         }
         
         @keyframes pulse {
-            0% { box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3); }
-            50% { box-shadow: 0 4px 12px rgba(13, 148, 136, 0.6); }
-            100% { box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3); }
+            0% { box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3); }
+            50% { box-shadow: 0 4px 12px rgba(255, 107, 53, 0.6); }
+            100% { box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3); }
         }
         
         .chat-window {
@@ -748,7 +748,7 @@
         }
         
         .chat-header {
-            background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+            background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
             color: white;
             padding: 16px;
             text-align: center;
@@ -806,7 +806,7 @@
         }
         
         .message-user {
-            background: #0d9488;
+            background: #ff6b35;
             color: white;
             padding: 12px;
             border-radius: 12px 12px 4px 12px;
@@ -830,7 +830,7 @@
         }
         
         .chat-input:focus {
-            border-color: #0d9488;
+            border-color: #ff6b35;
         }
         
         .quick-replies {
@@ -851,9 +851,9 @@
         }
         
         .quick-reply:hover {
-            background: #0d9488;
+            background: #ff6b35;
             color: white;
-            border-color: #0d9488;
+            border-color: #ff6b35;
         }
         
         /* Mobile adjustments */
@@ -1341,7 +1341,7 @@
             <div class="chat-messages" id="chatMessages">
                 <div class="chat-message">
                     <div class="message-bot">
-                        Hi! I'm your AI assistant. I help HVAC customers 24/7. How can I help you today?
+                        Hi! I'm your AI assistant. I help HVAC customers 24/7 with real-time answers from our knowledge base. How can I help you today?
                     </div>
                 </div>
             </div>
@@ -1381,16 +1381,16 @@
                 // Track chat widget opening
                 va('track', 'chat_widget_opened');
                 
-                // Show typing indicator after a moment
+                // Show welcome message for first-time users
                 if (messageCount === 1) {
                     setTimeout(() => {
-                        addBotMessage("I see you're interested in our AI chat! This is exactly what your customers would experience on your website. Pretty cool, right? 😊");
+                        addBotMessage("I see you're interested in our AI chat! I'm connected to our live knowledge base and can answer real questions about HVAC services. Try asking me anything! 😊");
                     }, 2000);
                 }
             } else {
                 chatWindow.style.display = 'none';
                 chatButton.innerHTML = '💬';
-                chatButton.style.background = 'linear-gradient(135deg, #0d9488 0%, #0f766e 100%)';
+                chatButton.style.background = 'linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%)';
             }
         }
         
@@ -1405,10 +1405,9 @@
                 // Track message sent
                 va('track', 'chat_message_sent', {message: message});
                 
-                // Simulate AI response
-                setTimeout(() => {
-                    generateAIResponse(message);
-                }, 1000 + Math.random() * 1000);
+                // Show typing indicator and call API
+                addTypingIndicator();
+                callAPI(message);
             }
         }
         
@@ -1418,9 +1417,9 @@
             // Track quick reply usage
             va('track', 'quick_reply_used', {reply: message});
             
-            setTimeout(() => {
-                generateAIResponse(message);
-            }, 800);
+            // Show typing indicator and call API
+            addTypingIndicator();
+            callAPI(message);
         }
         
         function addUserMessage(message) {
@@ -1486,9 +1485,9 @@
                 chatButton.innerHTML = '💬<span style="position: absolute; top: -5px; right: -5px; background: #ef4444; color: white; border-radius: 50%; width: 20px; height: 20px; font-size: 12px; display: flex; align-items: center; justify-content: center;">1</span>';
                 
                 setTimeout(() => {
-                    addBotMessage("👋 Hey there! I noticed you're checking out MissedHVAC.com. I'm a demo of the AI chat your customers would see. Want to try talking to me?");
+                    addBotMessage("👋 Hey there! I noticed you're checking out MissedHVAC.com. I'm powered by the same AI that your customers would interact with. Want to try asking me a question?");
                     
-                    // Add a gentle notification sound (optional)
+                    // Track auto message
                     va('track', 'chat_auto_message_shown');
                 }, 1000);
             }
