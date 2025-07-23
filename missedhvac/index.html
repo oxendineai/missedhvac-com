@@ -1,1636 +1,303 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HVAC AI Chat Widget | Capture 73% More Leads 24/7 | MissedHVAC.com</title>
-    <meta name="description" content="Stop losing $6K/mo in HVAC leads. Our AI chat captures every inquiry, books appointments—14-day free trial. Never miss an emergency again.">
-    <meta name="keywords" content="HVAC AI chat, HVAC chatbot, HVAC lead capture, AI chat widget, HVAC contractors, lead generation">
-    <meta property="og:title" content="HVAC AI Chat Widget - Never Miss Another Lead">
-    <meta property="og:description" content="73% of HVAC website visitors leave without converting. Our AI chat captures every lead 24/7.">
-    <meta property="og:image" content="https://www.missedhvac.com/og-image.jpg">
-    <meta property="og:url" content="https://www.missedhvac.com">
-    <meta name="twitter:card" content="summary_large_image">
+// HVAC AI Assistant Widget - Original Working Version
+// Connects to your real n8n system at: https://oxendineleads.app.n8n.cloud/webhook-test/chat
+(function() {
+    'use strict';
     
-    <!-- Vercel Analytics -->
-    <script>
-        window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-    </script>
-    <script defer src="https://cdn.vercel-insights.com/v1/script.js"></script>
-    
-    <!-- Schema Markup for SEO -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        "name": "HVAC AI Chat Widget",
-        "description": "24/7 AI chat widget for HVAC contractor websites",
-        "applicationCategory": "BusinessApplication",
-        "operatingSystem": "Web",
-        "offers": {
-            "@type": "Offer",
-            "price": "199",
-            "priceCurrency": "USD",
-            "priceValidUntil": "2025-12-31"
-        },
-        "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "4.9",
-            "reviewCount": "127"
-        },
-        "creator": {
-            "@type": "Organization",
-            "name": "MissedHVAC",
-            "url": "https://www.missedhvac.com"
-        }
-    }
-    </script>
-    
-    <!-- FAQ Schema -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
-            {
-                "@type": "Question",
-                "name": "How does AI chat help HVAC contractors?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Our AI chat captures website visitors 24/7, qualifies leads automatically, and books appointments directly to your calendar. It understands HVAC terminology and can provide basic estimates for common repairs."
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "Do I need a credit card for the free trial?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Yes, but you won't be charged for 14 days. This helps us prevent spam signups and ensures you get the full onboarding experience. Cancel anytime during the trial."
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "How quickly can I get set up?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Setup takes 24 hours or less. We integrate the chat widget with your website, train the AI on your services and pricing, and provide a 1-hour training session to maximize results."
-                }
-            }
-        ]
-    }
-    </script>
-    
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            line-height: 1.6;
-            color: #333;
-        }
-        
-        /* Header Styles */
-        .header {
-            background: #fff;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-        }
-        
-        .nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 5%;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #0d9488;
-        }
-        
-        .cta-header {
-            background: #0d9488;
-            color: white;
-            padding: 0.75rem 2rem;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: background 0.3s;
-            cursor: pointer;
-            border: none;
-            font-size: 1rem;
-        }
-        
-        .cta-header:hover {
-            background: #0f766e;
-        }
-        
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
-            padding: 120px 5% 80px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at 30% 50%, rgba(13, 148, 136, 0.2) 0%, transparent 50%);
-            pointer-events: none;
-        }
-        
-        .hero-content {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        .hero h1 {
-            font-size: 3rem;
-            color: #ffffff;
-            margin-bottom: 1rem;
-            line-height: 1.2;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-        
-        .hero-subheadline {
-            font-size: 1.25rem;
-            color: #ecf0f1;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-        }
-        
-        .urgency-banner {
-            background: rgba(243, 156, 18, 0.15);
-            border: 2px solid #f39c12;
-            padding: 1rem;
-            margin-bottom: 2rem;
-            border-radius: 5px;
-            font-weight: bold;
-            color: #f39c12;
-            backdrop-filter: blur(5px);
-            box-shadow: 0 4px 15px rgba(243, 156, 18, 0.2);
-        }
-        
-        /* Video Demo Section */
-        .demo-section {
-            background: white;
-            padding: 60px 5%;
-            text-align: center;
-        }
-        
-        .demo-container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        .demo-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-        
-        /* Video Container Styles */
-        .video-container {
-            position: relative;
-            padding-bottom: 56.25%; /* 16:9 aspect ratio */
-            height: 0;
-            overflow: hidden;
-            max-width: 800px;
-            margin: 0 auto;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-        
-        .stat {
-            text-align: center;
-        }
-        
-        .stat-number {
-            font-size: 3rem;
-            color: #0d9488;
-            font-weight: bold;
-        }
-        
-        .stat-label {
-            color: #7f8c8d;
-        }
-        
-        /* Pre-Trial Signup Section */
-        .signup-section {
-            background: #e8f8f5;
-            padding: 60px 5%;
-            text-align: center;
-        }
-        
-        .signup-section h2 {
-            font-size: 2.5rem;
-            color: #2c3e50;
-            margin-bottom: 1rem;
-        }
-        
-        .signup-section p {
-            font-size: 1.25rem;
-            color: #7f8c8d;
-            margin-bottom: 2rem;
-        }
-        
-        .form-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 1rem;
-            flex-wrap: wrap;
-            margin-bottom: 2rem;
-        }
-        
-        .email-input {
-            padding: 1rem;
-            width: 350px;
-            border: 2px solid #0d9488;
-            border-radius: 5px;
-            font-size: 1rem;
-            outline: none;
-        }
-        
-        .benefits-grid {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-        }
-        
-        .benefit-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .checkmark {
-            color: #27ae60;
-            font-size: 1.2rem;
-        }
-        
-        .benefit-text {
-            color: #7f8c8d;
-        }
-        
-        /* Problem Section */
-        .problem-section {
-            background: #f8f9fa;
-            padding: 60px 5%;
-        }
-        
-        .section-container {
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-        
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            color: #2c3e50;
-            margin-bottom: 3rem;
-        }
-        
-        .problem-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-        
-        .problem-card {
-            background: white;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-            text-align: center;
-        }
-        
-        .problem-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-        
-        .problem-title {
-            font-size: 1.25rem;
-            color: #2c3e50;
-            margin-bottom: 0.5rem;
-        }
-        
-        .problem-desc {
-            color: #7f8c8d;
-        }
-        
-        /* Solution Section */
-        .solution-section {
-            background: white;
-            padding: 60px 5%;
-        }
-        
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 3rem;
-            margin-top: 3rem;
-        }
-        
-        .feature {
-            text-align: left;
-        }
-        
-        .feature-icon {
-            background: #0d9488;
-            color: white;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-        
-        .feature-title {
-            font-size: 1.5rem;
-            color: #2c3e50;
-            margin-bottom: 0.5rem;
-        }
-        
-        .feature-desc {
-            color: #7f8c8d;
-            line-height: 1.8;
-        }
-        
-        /* FAQ Section */
-        .faq-section {
-            background: #ecf0f1;
-            padding: 60px 5%;
-        }
-        
-        .faq-container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        .faq-item {
-            background: white;
-            margin-bottom: 1rem;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        
-        .faq-question {
-            padding: 1.5rem;
-            background: #0d9488;
-            color: white;
-            cursor: pointer;
-            font-weight: bold;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .faq-question:hover {
-            background: #0f766e;
-        }
-        
-        .faq-toggle {
-            font-size: 1.2rem;
-            transition: transform 0.3s;
-        }
-        
-        .faq-answer {
-            padding: 0 1.5rem;
-            max-height: 0;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-        
-        .faq-answer.open {
-            padding: 1.5rem;
-            max-height: 200px;
-        }
-        
-        /* ROI Calculator */
-        .roi-section {
-            background: white;
-            padding: 60px 5%;
-        }
-        
-        .roi-calculator {
-            background: #f8f9fa;
-            padding: 3rem;
-            border-radius: 10px;
-            max-width: 600px;
-            margin: 0 auto;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-        
-        .roi-title {
-            text-align: center;
-            font-size: 2rem;
-            color: #2c3e50;
-            margin-bottom: 2rem;
-        }
-        
-        .roi-input-group {
-            margin-bottom: 1.5rem;
-        }
-        
-        .roi-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: bold;
-            color: #2c3e50;
-        }
-        
-        .roi-input {
-            width: 100%;
-            padding: 0.75rem;
-            border: 2px solid #bdc3c7;
-            border-radius: 5px;
-            font-size: 1rem;
-        }
-        
-        .roi-result {
-            background: #e8f8f5;
-            border: 2px solid #27ae60;
-            padding: 2rem;
-            border-radius: 10px;
-            text-align: center;
-            margin-top: 2rem;
-        }
-        
-        .roi-result-number {
-            font-size: 3rem;
-            color: #27ae60;
-            font-weight: bold;
-        }
-        
-        /* Testimonials */
-        .testimonials-section {
-            background: #f8f9fa;
-            padding: 60px 5%;
-        }
-        
-        .testimonial-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-        
-        .testimonial {
-            background: white;
-            padding: 2rem;
-            border-radius: 10px;
-            position: relative;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-        }
-        
-        .testimonial-quote {
-            font-size: 1.1rem;
-            color: #2c3e50;
-            margin-bottom: 1rem;
-            font-style: italic;
-        }
-        
-        .testimonial-author {
-            font-weight: bold;
-            color: #0d9488;
-        }
-        
-        .testimonial-company {
-            color: #7f8c8d;
-            font-size: 0.9rem;
-        }
-        
-        /* Pricing Section */
-        .pricing-section {
-            background: #2c3e50;
-            color: white;
-            padding: 80px 5%;
-            text-align: center;
-        }
-        
-        .pricing-title {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-        
-        .pricing-subtitle {
-            font-size: 1.25rem;
-            opacity: 0.8;
-            margin-bottom: 3rem;
-        }
-        
-        .pricing-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-        
-        .pricing-card {
-            background: white;
-            color: #2c3e50;
-            padding: 3rem 2rem;
-            border-radius: 10px;
-            position: relative;
-            transition: transform 0.3s;
-        }
-        
-        .pricing-card.featured {
-            transform: scale(1.05);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-        }
-        
-        .popular-badge {
-            position: absolute;
-            top: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #0d9488;
-            color: white;
-            padding: 0.5rem 2rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: bold;
-        }
-        
-        .pricing-card-title {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-        
-        .pricing-price {
-            font-size: 3rem;
-            font-weight: bold;
-            color: #0d9488;
-            margin-bottom: 0.5rem;
-        }
-        
-        .pricing-period {
-            color: #7f8c8d;
-            margin-bottom: 2rem;
-        }
-        
-        .pricing-features {
-            list-style: none;
-            margin-bottom: 2rem;
-        }
-        
-        .pricing-features li {
-            padding: 0.5rem 0;
-            border-bottom: 1px solid #ecf0f1;
-        }
-        
-        .pricing-cta {
-            display: block;
-            background: #0d9488;
-            color: white;
-            padding: 1rem 2rem;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: background 0.3s;
-            margin-bottom: 0.5rem;
-            cursor: pointer;
-        }
-        
-        .pricing-cta:hover {
-            background: #0f766e;
-        }
-        
-        .pricing-cta-secondary {
-            display: block;
-            background: transparent;
-            color: #0d9488;
-            border: 2px solid #0d9488;
-            padding: 0.75rem 1.5rem;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-        
-        .pricing-cta-secondary:hover {
-            background: #0d9488;
-            color: white;
-        }
-        
-        /* Final CTA */
-        .final-cta {
-            background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
-            color: white;
-            padding: 80px 5%;
-            text-align: center;
-        }
-        
-        .final-cta-content {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        
-        .final-cta h2 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-        
-        .final-cta-text {
-            font-size: 1.25rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-        }
-        
-        .guarantee {
-            background: rgba(255,255,255,0.1);
-            padding: 1rem;
-            border-radius: 5px;
-            margin-top: 2rem;
-        }
-        
-        /* Footer */
-        .footer {
-            background: #2c3e50;
-            color: white;
-            padding: 2rem 5%;
-            text-align: center;
-        }
-        
-        .footer-links {
-            margin-bottom: 1rem;
-        }
-        
-        .footer-links a {
-            color: white;
-            text-decoration: none;
-            margin: 0 1rem;
-            opacity: 0.8;
-        }
-        
-        .footer-links a:hover {
-            opacity: 1;
-        }
-        
-        /* Chat Widget Styles */
-        .chat-widget {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        }
-        
-        .chat-button {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 24px;
-            transition: all 0.3s ease;
-            animation: pulse 2s infinite;
-        }
-        
-        .chat-button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
-        }
-        
-        @keyframes pulse {
-            0% { box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3); }
-            50% { box-shadow: 0 4px 12px rgba(255, 107, 53, 0.6); }
-            100% { box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3); }
-        }
-        
-        .chat-window {
-            position: absolute;
-            bottom: 70px;
-            right: 0;
-            width: 350px;
-            height: 500px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-            display: none;
-            flex-direction: column;
-            overflow: hidden;
-        }
-        
-        .chat-header {
-            background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
-            color: white;
-            padding: 16px;
-            text-align: center;
-            font-weight: bold;
-        }
-        
-        .chat-header h3 {
-            margin: 0;
-            font-size: 16px;
-        }
-        
-        .chat-header p {
-            margin: 4px 0 0 0;
-            font-size: 12px;
-            opacity: 0.9;
-        }
-        
-        .chat-messages {
-            flex: 1;
-            padding: 16px;
-            overflow-y: auto;
-            background: #f8f9fa;
-        }
-        
-        .chat-message {
-            margin-bottom: 12px;
-            animation: fadeInUp 0.3s ease;
-        }
-        
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .message-bot {
-            background: white;
-            padding: 12px;
-            border-radius: 12px 12px 12px 4px;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-            position: relative;
-        }
-        
-        .message-bot::before {
-            content: '🤖';
-            position: absolute;
-            left: -25px;
-            top: 8px;
-            font-size: 16px;
-        }
-        
-        .message-user {
-            background: #ff6b35;
-            color: white;
-            padding: 12px;
-            border-radius: 12px 12px 4px 12px;
-            margin-left: 50px;
-            text-align: right;
-        }
-        
-        .chat-input-area {
-            padding: 16px;
-            background: white;
-            border-top: 1px solid #e5e7eb;
-        }
-        
-        .chat-input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #d1d5db;
-            border-radius: 20px;
-            outline: none;
-            font-size: 14px;
-        }
-        
-        .chat-input:focus {
-            border-color: #ff6b35;
-        }
-        
-        .quick-replies {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 12px;
-        }
-        
-        .quick-reply {
-            background: #f3f4f6;
-            border: 1px solid #d1d5db;
-            padding: 6px 12px;
-            border-radius: 16px;
-            font-size: 12px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .quick-reply:hover {
-            background: #ff6b35;
-            color: white;
-            border-color: #ff6b35;
-        }
-        
-        /* Mobile adjustments */
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2rem;
-            }
-            
-            .section-title {
-                font-size: 2rem;
-            }
-            
-            .pricing-card.featured {
-                transform: none;
-            }
-            
-            .form-container {
-                flex-direction: column;
-                gap: 1rem;
-            }
-            
-            .email-input {
-                width: 100% !important;
-                max-width: 350px;
-            }
-            
-            .video-container {
-                max-width: 100%;
-                margin: 0;
-                border-radius: 5px;
-            }
-            
-            .benefits-grid {
-                flex-direction: column;
-                gap: 1rem;
-                align-items: center;
-            }
-            
-            .benefit-item {
-                justify-content: center;
-            }
-            
-            .chat-window {
-                width: 300px;
-                height: 450px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <!-- Header -->
-    <header class="header">
-        <nav class="nav">
-            <div class="logo">Missed HVAC Leads</div>
-            <a href="#signup" class="cta-header" onclick="va('track', 'header_cta_clicked')">Start Free Trial</a>
-        </nav>
-    </header>
-    
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <div class="urgency-banner">
-                ⚠️ HVAC Contractors Lose $6,000/Month in Website Leads
-            </div>
-            <h1>73% of Website Visitors Leave Without Converting<br>Capture Every Lead 24/7</h1>
-            <p class="hero-subheadline">
-                While you slept, your competitors captured website leads with AI chat that should have been yours.
-            </p>
-            <a href="#signup" class="cta-header" style="font-size: 1.25rem; padding: 1rem 3rem;" onclick="va('track', 'hero_cta_clicked')">
-                Start Capturing Every Visitor →
-            </a>
-        </div>
-    </section>
-    
-    <!-- Demo Section -->
-    <section class="demo-section" id="demo">
-        <div class="demo-container">
-            <p style="text-align: center; margin-bottom: 1rem; color: #666; font-size: 14px;">
-                👇 Click play to watch with sound
-            </p>
-            <div class="video-container">
-                <iframe src="https://www.loom.com/embed/cbfd7db9ad0b418f926b26c439d05c7a?hide_owner=true&hide_share=true&hide_title=true&hideEmbedTopBar=true&t=0" 
-                        frameborder="0" 
-                        allowfullscreen 
-                        onload="va('track', 'demo_loaded')"
-                        onclick="va('track', 'demo_clicked')"
-                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 10px;">
-                </iframe>
-            </div>
-            
-            <div style="background: #fff3cd; border: 2px solid #ffc107; color: #856404; padding: 1rem; border-radius: 8px; margin-top: 2rem; text-align: center;">
-                <strong>🎯 LIVE DEMO:</strong> Check out the chat widget in the bottom-right corner! 
-                This is exactly what your customers will see on your website. Try talking to our AI! →
-            </div>
+    let chatOpen = false;
+    let messageCount = 0;
 
-            <div class="demo-stats">
-                <div class="stat">
-                    <div class="stat-number">24/7</div>
-                    <div class="stat-label">Always Engaging</div>
+    // Initialize the widget
+    function initWidget() {
+        // Create the chat widget HTML
+        const widgetHTML = `
+            <div id="hvac-chat-widget" style="position: fixed; bottom: 20px; right: 20px; font-family: Arial, sans-serif; z-index: 10000;">
+                <!-- Chat Button -->
+                <div id="hvac-chat-button" onclick="window.HVACWidget.toggle()" style="
+                    width: 120px;
+                    height: 40px;
+                    background: linear-gradient(45deg, #ff6b35, #ff8c42);
+                    color: white;
+                    border-radius: 20px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    cursor: pointer;
+                    box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+                    font-weight: bold;
+                    font-size: 14px;
+                    transition: all 0.3s ease;
+                ">
+                    💬 HVAC Assistant
                 </div>
-                <div class="stat">
-                    <div class="stat-number">47</div>
-                    <div class="stat-label">Leads Last Week</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-number">$18,800</div>
-                    <div class="stat-label">Revenue Captured</div>
+
+                <!-- Chat Window -->
+                <div id="hvac-chat-window" style="
+                    position: absolute;
+                    bottom: 50px;
+                    right: 0;
+                    width: 350px;
+                    height: 500px;
+                    background: white;
+                    border-radius: 12px;
+                    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+                    display: none;
+                    flex-direction: column;
+                    overflow: hidden;
+                ">
+                    <!-- Header -->
+                    <div style="
+                        background: linear-gradient(45deg, #ff6b35, #ff8c42);
+                        color: white;
+                        padding: 16px;
+                        text-align: center;
+                    ">
+                        <div style="font-weight: bold; font-size: 16px;">HVAC AI Assistant</div>
+                        <div style="font-size: 12px; opacity: 0.9;">Online • Powered by MissedHVAC.com</div>
+                    </div>
+
+                    <!-- Messages -->
+                    <div id="hvac-chat-messages" style="
+                        flex: 1;
+                        padding: 16px;
+                        overflow-y: auto;
+                        background: #f8f9fa;
+                    ">
+                        <div style="
+                            background: white;
+                            padding: 12px;
+                            border-radius: 12px 12px 12px 4px;
+                            margin-bottom: 12px;
+                            position: relative;
+                            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+                        ">
+                            🤖 Hi! I'm your AI assistant. I help HVAC customers 24/7 with real-time answers from our knowledge base. How can I help you today?
+                        </div>
+                    </div>
+
+                    <!-- Input Area -->
+                    <div style="padding: 16px; background: white; border-top: 1px solid #eee;">
+                        <div style="display: flex; gap: 10px; margin-bottom: 12px;">
+                            <input type="text" id="hvac-chat-input" placeholder="Type your message..." style="
+                                flex: 1;
+                                padding: 12px;
+                                border: 1px solid #ddd;
+                                border-radius: 20px;
+                                outline: none;
+                                font-size: 14px;
+                            ">
+                            <button onclick="window.HVACWidget.sendMessage()" style="
+                                padding: 12px 20px;
+                                background: linear-gradient(45deg, #ff6b35, #ff8c42);
+                                color: white;
+                                border: none;
+                                border-radius: 20px;
+                                cursor: pointer;
+                                font-weight: bold;
+                            ">Send</button>
+                        </div>
+                        
+                        <!-- Quick Replies -->
+                        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                            <button onclick="window.HVACWidget.sendQuickReply('Emergency AC repair')" class="hvac-quick-reply">Emergency AC repair</button>
+                            <button onclick="window.HVACWidget.sendQuickReply('Get estimate')" class="hvac-quick-reply">Get estimate</button>
+                            <button onclick="window.HVACWidget.sendQuickReply('Schedule service')" class="hvac-quick-reply">Schedule service</button>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
-    
-    <!-- Pre-Trial Signup Form -->
-    <section class="signup-section" id="signup">
-        <div class="section-container">
-            <h2>Start Your 14-Day Free Trial</h2>
-            <p>Get full Professional plan access ($299 value) - all features included. No restrictions.</p>
+        `;
+
+        // Add CSS
+        const css = `
+            .hvac-quick-reply {
+                background: #f3f4f6;
+                border: 1px solid #d1d5db;
+                padding: 6px 12px;
+                border-radius: 16px;
+                font-size: 12px;
+                cursor: pointer;
+                transition: all 0.2s;
+            }
             
-            <form id="trial-form" style="margin-bottom: 2rem;">
-                <div class="form-container">
-                    <input type="text" 
-                           id="firstName" 
-                           name="firstName" 
-                           placeholder="First name" 
-                           required 
-                           class="email-input"
-                           style="width: 200px;" />
-                    <input type="email" 
-                           id="email" 
-                           name="email" 
-                           placeholder="Business email" 
-                           required 
-                           class="email-input"
-                           style="width: 250px;"
-                           onkeypress="if(event.key==='Enter') submitTrialForm(event)" />
-                    <button type="button" 
-                            onclick="submitTrialForm(event)" 
-                            class="cta-header" 
-                            style="padding: 1rem 2rem; font-size: 1rem; white-space: nowrap;">
-                        Start Free Trial →
-                    </button>
-                </div>
-            </form>
-            
-            <div class="benefits-grid">
-                <div class="benefit-item">
-                    <span class="checkmark">✓</span>
-                    <span class="benefit-text">Full Professional features ($299 value)</span>
-                </div>
-                <div class="benefit-item">
-                    <span class="checkmark">✓</span>
-                    <span class="benefit-text">10,000 conversations included</span>
-                </div>
-                <div class="benefit-item">
-                    <span class="checkmark">✓</span>
-                    <span class="benefit-text">SMS alerts & calendar integration</span>
-                </div>
-                <div class="benefit-item">
-                    <span class="checkmark">✓</span>
-                    <span class="benefit-text">Cancel anytime - no commitment</span>
-                </div>
-            </div>
-            
-            <p style="color: #7f8c8d; font-size: 0.9rem;">14 days completely free. Choose your plan in checkout. 30-day money-back guarantee.</p>
-        </div>
-    </section>
-    
-    <!-- Problem Section -->
-    <section class="problem-section">
-        <div class="section-container">
-            <h2 class="section-title">The Hidden Cost of Unengaged Website Visitors</h2>
-            <div class="problem-grid">
-                <div class="problem-card">
-                    <div class="problem-icon">💻</div>
-                    <h3 class="problem-title">73% of Visitors Leave Immediately</h3>
-                    <p class="problem-desc">The average HVAC website loses 73% of visitors without capturing any contact info. That's money walking away.</p>
-                </div>
-                <div class="problem-card">
-                    <div class="problem-icon">💸</div>
-                    <h3 class="problem-title">$2,400 Per Lost Lead</h3>
-                    <p class="problem-desc">Each qualified lead is worth $2,400 on average. Losing just 3 per week costs you $7,200.</p>
-                </div>
-                <div class="problem-card">
-                    <div class="problem-icon">🏃</div>
-                    <h3 class="problem-title">Visitors Go to Competitors</h3>
-                    <p class="problem-desc">89% of visitors move to the next website if they can't get instant answers. They become someone else's customer.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Solution Section -->
-    <section class="solution-section">
-        <div class="section-container">
-            <h2 class="section-title">Never Miss Another Website Lead - Guaranteed</h2>
-            <div class="feature-grid">
-                <div class="feature">
-                    <div class="feature-icon">🤖</div>
-                    <h3 class="feature-title">AI That Knows HVAC</h3>
-                    <p class="feature-desc">Not just any chatbot - this AI understands the difference between a clogged filter and a compressor failure. It speaks your language and qualifies leads like a seasoned tech.</p>
-                </div>
-                <div class="feature">
-                    <div class="feature-icon">📱</div>
-                    <h3 class="feature-title">Instant Lead Notifications</h3>
-                    <p class="feature-desc">Get notified the moment a visitor engages with your chat widget. Include customer details, issue description, and urgency level. Respond immediately or let the AI handle it.</p>
-                </div>
-                <div class="feature">
-                    <div class="feature-icon">📅</div>
-                    <h3 class="feature-title">Books Appointments Automatically</h3>
-                    <p class="feature-desc">Your AI assistant has access to your calendar and books appointments on the spot. No back-and-forth, no missed opportunities.</p>
-                </div>
-                <div class="feature">
-                    <div class="feature-icon">💰</div>
-                    <h3 class="feature-title">Provides Instant Estimates</h3>
-                    <p class="feature-desc">Based on YOUR pricing, the AI can give rough estimates for common issues. Customers get answers immediately, and you get qualified, price-aware leads.</p>
-                </div>
-                <div class="feature">
-                    <div class="feature-icon">🔥</div>
-                    <h3 class="feature-title">Identifies High-Value Leads</h3>
-                    <p class="feature-desc">Emergency repair needed? New system installation? The AI recognizes high-value opportunities and alerts you immediately while capturing all the details.</p>
-                </div>
-                <div class="feature">
-                    <div class="feature-icon">📊</div>
-                    <h3 class="feature-title">Track Every Lead Source</h3>
-                    <p class="feature-desc">Know exactly where your visitors come from, what they need, and how much revenue each source generates. Make data-driven decisions.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- FAQ Section -->
-    <section class="faq-section" id="faq">
-        <div class="section-container">
-            <h2 class="section-title">Frequently Asked Questions</h2>
-            <div class="faq-container">
-                <div class="faq-item" data-question="how-does-ai-help-hvac">
-                    <div class="faq-question" onclick="toggleFAQ(this)">
-                        How does AI chat help HVAC contractors?
-                        <span class="faq-toggle">+</span>
-                    </div>
-                    <div class="faq-answer">
-                        Our AI chat captures website visitors 24/7, qualifies leads automatically, and books appointments directly to your calendar. It understands HVAC terminology and can provide basic estimates for common repairs like AC tune-ups, filter replacements, and system diagnostics.
-                    </div>
-                </div>
+            .hvac-quick-reply:hover {
+                background: #ff6b35;
+                color: white;
+                border-color: #ff6b35;
+            }
+
+            @media (max-width: 480px) {
+                #hvac-chat-widget {
+                    position: fixed !important;
+                    top: 0 !important;
+                    left: 0 !important;
+                    right: 0 !important;
+                    bottom: 0 !important;
+                    width: 100% !important;
+                    height: 100% !important;
+                }
                 
-                <div class="faq-item" data-question="credit-card-trial">
-                    <div class="faq-question" onclick="toggleFAQ(this)">
-                        Do I need a credit card for the free trial?
-                        <span class="faq-toggle">+</span>
-                    </div>
-                    <div class="faq-answer">
-                        Yes, but you won't be charged for 14 days. This helps us prevent spam signups and ensures you get the full onboarding experience including professional implementation. Cancel anytime during the trial with no charges.
-                    </div>
-                </div>
-                
-                <div class="faq-item" data-question="setup-time">
-                    <div class="faq-question" onclick="toggleFAQ(this)">
-                        How quickly can I get set up?
-                        <span class="faq-toggle">+</span>
-                    </div>
-                    <div class="faq-answer">
-                        Setup takes 24 hours or less. We integrate the chat widget with your website, train the AI on your services and pricing, and provide a 1-hour training session to maximize your lead capture results.
-                    </div>
-                </div>
-                
-                <div class="faq-item" data-question="ai-training">
-                    <div class="faq-question" onclick="toggleFAQ(this)">
-                        How is the AI trained for HVAC businesses?
-                        <span class="faq-toggle">+</span>
-                    </div>
-                    <div class="faq-answer">
-                        We've trained our AI on over 10,000 HVAC customer inquiries, common repair scenarios, and industry terminology. During setup, we customize it with your specific services, pricing ranges, and service area to provide accurate responses to your customers.
-                    </div>
-                </div>
-                
-                <div class="faq-item" data-question="lead-quality">
-                    <div class="faq-question" onclick="toggleFAQ(this)">
-                        Will the AI qualify leads properly?
-                        <span class="faq-toggle">+</span>
-                    </div>
-                    <div class="faq-answer">
-                        Absolutely. The AI asks qualifying questions like location, type of system, urgency level, and budget range. It prioritizes emergency calls, identifies high-value opportunities like system replacements, and filters out time-wasters before they reach your phone.
-                    </div>
-                </div>
-                
-                <div class="faq-item" data-question="integration">
-                    <div class="faq-question" onclick="toggleFAQ(this)">
-                        Does it integrate with my existing tools?
-                        <span class="faq-toggle">+</span>
-                    </div>
-                    <div class="faq-answer">
-                        Yes! We integrate with popular HVAC software, CRM systems, and calendar applications. The AI can automatically create leads in your CRM, book appointments in your calendar, and send notifications via email or SMS.
-                    </div>
-                </div>
-                
-                <div class="faq-item" data-question="emergency-calls">
-                    <div class="faq-question" onclick="toggleFAQ(this)">
-                        What about emergency calls?
-                        <span class="faq-toggle">+</span>
-                    </div>
-                    <div class="faq-answer">
-                        Emergency situations get special treatment. The AI recognizes urgent keywords like "no heat," "no AC," "flooding," or "gas smell" and immediately alerts you via phone call and text message while capturing all the customer details.
-                    </div>
-                </div>
-                
-                <div class="faq-item" data-question="mobile-friendly">
-                    <div class="faq-question" onclick="toggleFAQ(this)">
-                        Does it work on mobile devices?
-                        <span class="faq-toggle">+</span>
-                    </div>
-                    <div class="faq-answer">
-                        Yes, the chat widget is fully mobile-responsive. Since 60% of HVAC searches happen on mobile devices, we've optimized the experience for smartphones and tablets to capture those on-the-go emergency calls.
-                    </div>
-                </div>
-                
-                <div class="faq-item" data-question="pricing-estimates">
-                    <div class="faq-question" onclick="toggleFAQ(this)">
-                        Can the AI provide pricing estimates?
-                        <span class="faq-toggle">+</span>
-                    </div>
-                    <div class="faq-answer">
-                        Yes, for common services. We program the AI with your pricing ranges for standard services like maintenance calls, filter replacements, and basic repairs. For complex issues, it schedules an on-site estimate and sets proper expectations.
-                    </div>
-                </div>
-                
-                <div class="faq-item" data-question="after-hours">
-                    <div class="faq-question" onclick="toggleFAQ(this)">
-                        Does it work after business hours?
-                        <span class="faq-toggle">+</span>
-                    </div>
-                    <div class="faq-answer">
-                        That's when it shines! The AI captures leads 24/7, especially valuable after-hours emergency calls worth $2,400+ each. Customers get immediate responses and you get qualified leads first thing in the morning, giving you a competitive advantage.
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- ROI Calculator -->
-    <section class="roi-section">
-        <div class="section-container">
-            <div class="roi-calculator">
-                <h2 class="roi-title">Calculate Your Lost Revenue</h2>
-                <div class="roi-input-group">
-                    <label class="roi-label">Missed website leads per week:</label>
-                    <input type="number" class="roi-input" value="10" id="missedCalls" onchange="calculateROI()">
-                </div>
-                <div class="roi-input-group">
-                    <label class="roi-label">Average job value:</label>
-                    <input type="number" class="roi-input" value="650" id="jobValue" onchange="calculateROI()">
-                </div>
-                <div class="roi-result">
-                    <div class="roi-result-label">Monthly Lost Revenue:</div>
-                    <div class="roi-result-number" id="lostRevenue">$26,000</div>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Testimonials -->
-    <section class="testimonials-section">
-        <div class="section-container">
-            <h2 class="section-title">Your Competitors Are Already Using AI Chat - Are You Getting Left Behind?</h2>
-            <div class="testimonial-grid">
-                <div class="testimonial">
-                    <p class="testimonial-quote">"HVAC companies using AI chat capture 73% more website leads than competitors with static websites. Every visitor they engage is money in their pocket, not yours."</p>
-                    <div class="testimonial-author">Competitive Analysis</div>
-                    <div class="testimonial-company">Service Industry Report 2024</div>
-                </div>
-                <div class="testimonial">
-                    <p class="testimonial-quote">"Contractors without 24/7 AI chat lose an average of $84,000 per year to competitors who engage every website visitor. The gap is widening every month."</p>
-                    <div class="testimonial-author">Revenue Impact Study</div>
-                    <div class="testimonial-company">Home Services Research Group</div>
-                </div>
-                <div class="testimonial">
-                    <p class="testimonial-quote">"By 2025, customers will expect instant responses on websites. HVAC businesses still using 'contact us' forms will lose jobs to AI-powered competitors."</p>
-                    <div class="testimonial-author">Customer Behavior Analysis</div>
-                    <div class="testimonial-company">Digital Transformation Institute</div>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- What You Get Section -->
-    <section class="pricing-section" id="pricing">
-        <div class="section-container">
-            <h2 class="pricing-title">What's Included in Your Free Trial</h2>
-            <p class="pricing-subtitle">Full Professional plan access ($299 value) - no restrictions for 14 days</p>
-            
-            <div class="pricing-cards">
-                <div class="pricing-card">
-                    <h3 class="pricing-card-title">Trial Includes</h3>
-                    <div class="pricing-price">Everything</div>
-                    <div class="pricing-period">for 14 days</div>
-                    <ul class="pricing-features">
-                        <li>✓ 24/7 AI Chat Widget</li>
-                        <li>✓ 10,000 conversations/month</li>
-                        <li>✓ SMS text alerts</li>
-                        <li>✓ Calendar integration</li>
-                        <li>✓ Visitor tracking & recording</li>
-                        <li>✓ HVAC-specific AI training</li>
-                        <li>✓ Priority support</li>
-                        <li>✓ Professional implementation</li>
-                    </ul>
-                    <a href="#signup" class="pricing-cta" onclick="va('track', 'trial_clicked', {plan: 'professional'})">Start Your Free Trial</a>
-                </div>
-                
-                <div class="pricing-card featured">
-                    <div class="popular-badge">AFTER TRIAL</div>
-                    <h3 class="pricing-card-title">Choose Your Plan</h3>
-                    <div class="pricing-price">$199+</div>
-                    <div class="pricing-period">per month</div>
-                    <ul class="pricing-features">
-                        <li>✓ Starter Plan - $199/month</li>
-                        <li>✓ Professional Plan - $299/month</li>
-                        <li>✓ Scale Plan - $399/month</li>
-                        <li>✓ Pick the perfect fit for your business</li>
-                        <li>✓ Upgrade or downgrade anytime</li>
-                        <li>✓ 30-day money-back guarantee</li>
-                        <li>✓ Cancel anytime, no contracts</li>
-                        <li>✓ Same great features & support</li>
-                    </ul>
-                    <a href="#signup" class="pricing-cta" onclick="va('track', 'pricing_info_clicked')">Choose During Checkout</a>
-                </div>
-                
-                <div class="pricing-card">
-                    <h3 class="pricing-card-title">Guarantee</h3>
-                    <div class="pricing-price">100%</div>
-                    <div class="pricing-period">risk free</div>
-                    <ul class="pricing-features">
-                        <li>✓ 14-day free trial</li>
-                        <li>✓ No charge during trial</li>
-                        <li>✓ Cancel anytime</li>
-                        <li>✓ 30-day money-back guarantee</li>
-                        <li>✓ Setup & training included</li>
-                        <li>✓ Live customer support</li>
-                        <li>✓ No long-term contracts</li>
-                        <li>✓ Switch plans anytime</li>
-                    </ul>
-                    <a href="#signup" class="pricing-cta" onclick="va('track', 'guarantee_clicked')">Start Risk-Free Trial</a>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Final CTA -->
-    <section class="final-cta">
-        <div class="final-cta-content">
-            <h2>Stop Losing $6,000 Every Month</h2>
-            <p class="final-cta-text">
-                Join 500+ HVAC contractors who never miss another website lead. 
-                Set up in 24 hours. See results immediately.
-            </p>
-            <a href="#signup" class="cta-header" style="font-size: 1.25rem; padding: 1rem 3rem; display: inline-block;" onclick="va('track', 'final_cta_clicked')">
-                Start Your Free Trial Now →
-            </a>
-            <div class="guarantee">
-                💰 30-Day Money Back Guarantee - If you are not satisfied after 30 days, we will refund you.
-            </div>
-        </div>
-    </section>
-    
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-links">
-            <a href="#" onclick="va('track', 'footer_link_clicked', {link: 'privacy'})">Privacy Policy</a>
-            <a href="#" onclick="va('track', 'footer_link_clicked', {link: 'terms'})">Terms of Service</a>
-            <a href="#" onclick="va('track', 'footer_link_clicked', {link: 'contact'})">Contact</a>
-        </div>
-        <p>© 2024 MissedHVAC.com - Part of the Oxendine AI Services Empire</p>
-    </footer>
-    
-    <!-- Demo Chat Widget -->
-    <div class="chat-widget" id="chatWidget">
-        <button class="chat-button" onclick="toggleChat()" id="chatButton">
-            💬
-        </button>
-        
-        <div class="chat-window" id="chatWindow">
-            <div class="chat-header">
-                <h3>HVAC AI Assistant</h3>
-                <p>Online • Powered by MissedHVAC.com</p>
-            </div>
-            
-            <div class="chat-messages" id="chatMessages">
-                <div class="chat-message">
-                    <div class="message-bot">
-                        Hi! I'm your AI assistant. I help HVAC customers 24/7 with real-time answers. How can I help you today?
-                    </div>
-                </div>
-            </div>
-            
-            <div class="chat-input-area">
-                <input type="text" 
-                       class="chat-input" 
-                       id="chatInput" 
-                       placeholder="Type your message..."
-                       onkeypress="if(event.key==='Enter') sendMessage()" />
-                
-                <div class="quick-replies">
-                    <button class="quick-reply" onclick="sendQuickReply('Emergency AC repair')">Emergency AC repair</button>
-                    <button class="quick-reply" onclick="sendQuickReply('Get estimate')">Get estimate</button>
-                    <button class="quick-reply" onclick="sendQuickReply('Schedule service')">Schedule service</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <script>
-        // Chat Widget Functionality
-        let chatOpen = false;
-        let messageCount = 0;
-        
-        function toggleChat() {
-            const chatWindow = document.getElementById('chatWindow');
-            const chatButton = document.getElementById('chatButton');
+                #hvac-chat-window {
+                    position: fixed !important;
+                    top: 0 !important;
+                    left: 0 !important;
+                    right: 0 !important;
+                    bottom: 0 !important;
+                    width: 100% !important;
+                    height: 100% !important;
+                    border-radius: 0 !important;
+                }
+            }
+        `;
+
+        // Add CSS to page
+        const style = document.createElement('style');
+        style.textContent = css;
+        document.head.appendChild(style);
+
+        // Add widget to page
+        document.body.insertAdjacentHTML('beforeend', widgetHTML);
+
+        // Add enter key support
+        document.getElementById('hvac-chat-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                window.HVACWidget.sendMessage();
+            }
+        });
+
+        // Auto-show notification after 10 seconds
+        setTimeout(() => {
+            if (!chatOpen) {
+                const button = document.getElementById('hvac-chat-button');
+                button.style.animation = 'pulse 1s ease-in-out 3';
+                button.innerHTML = '💬 HVAC Assistant <span style="position: absolute; top: -5px; right: -5px; background: red; color: white; border-radius: 50%; width: 20px; height: 20px; font-size: 12px; display: flex; align-items: center; justify-content: center;">1</span>';
+            }
+        }, 10000);
+    }
+
+    // Widget functions
+    window.HVACWidget = {
+        toggle: function() {
+            const chatWindow = document.getElementById('hvac-chat-window');
+            const chatButton = document.getElementById('hvac-chat-button');
             
             chatOpen = !chatOpen;
             
             if (chatOpen) {
                 chatWindow.style.display = 'flex';
-                chatButton.innerHTML = '✕';
-                chatButton.style.background = '#ef4444';
-                
-                // Track chat widget opening
-                va('track', 'chat_widget_opened');
-                
-                // Show welcome message for first-time users
-                if (messageCount === 1) {
-                    setTimeout(() => {
-                        addBotMessage("I see you're interested in our AI chat! I'm connected to our live knowledge base and can answer real questions about HVAC services. Try asking me anything! 😊");
-                    }, 2000);
-                }
+                chatButton.innerHTML = '✕ Close';
+                chatButton.style.background = '#dc2626';
             } else {
                 chatWindow.style.display = 'none';
-                chatButton.innerHTML = '💬';
-                chatButton.style.background = 'linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%)';
+                chatButton.innerHTML = '💬 HVAC Assistant';
+                chatButton.style.background = 'linear-gradient(45deg, #ff6b35, #ff8c42)';
             }
-        }
-        
-        function sendMessage() {
-            const input = document.getElementById('chatInput');
+        },
+
+        sendMessage: function() {
+            const input = document.getElementById('hvac-chat-input');
             const message = input.value.trim();
             
-            if (message) {
-                addUserMessage(message);
-                input.value = '';
-                
-                // Track message sent
-                va('track', 'chat_message_sent', {message: message});
-                
-                // Show typing indicator and call API
-                addTypingIndicator();
-                callAPI(message);
-            }
-        }
-        
-        function sendQuickReply(message) {
-            addUserMessage(message);
+            if (!message) return;
             
-            // Track quick reply usage
-            va('track', 'quick_reply_used', {reply: message});
-            
-            // Show typing indicator and call API
-            addTypingIndicator();
-            callAPI(message);
-        }
-        
-        function addUserMessage(message) {
-            const messagesContainer = document.getElementById('chatMessages');
+            this.addMessage(message, 'user');
+            input.value = '';
+            this.showTyping();
+            this.sendToAI(message);
+        },
+
+        sendQuickReply: function(message) {
+            this.addMessage(message, 'user');
+            this.showTyping();
+            this.sendToAI(message);
+        },
+
+        addMessage: function(text, type) {
+            const messagesDiv = document.getElementById('hvac-chat-messages');
             const messageDiv = document.createElement('div');
-            messageDiv.className = 'chat-message';
-            messageDiv.innerHTML = `<div class="message-user">${message}</div>`;
-            messagesContainer.appendChild(messageDiv);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            messageCount++;
-        }
-        
-        function addBotMessage(message) {
-            const messagesContainer = document.getElementById('chatMessages');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'chat-message';
-            messageDiv.innerHTML = `<div class="message-bot">${message}</div>`;
-            messagesContainer.appendChild(messageDiv);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            messageCount++;
-        }
-        
-        function generateAIResponse(userMessage) {
-            const lowerMessage = userMessage.toLowerCase();
-            let response = '';
             
-            if (lowerMessage.includes('emergency') || lowerMessage.includes('urgent')) {
-                response = "I understand this is urgent! I can immediately connect you with our emergency HVAC technician. What's your location and phone number? Our tech can be there within 2 hours. ⚡";
-            } else if (lowerMessage.includes('estimate') || lowerMessage.includes('quote') || lowerMessage.includes('price') || lowerMessage.includes('cost')) {
-                response = "I'd be happy to provide an estimate! For AC repair, typical costs range from $150-$500 depending on the issue. Can you tell me: 1) What type of system? 2) What's the problem? 3) Your zip code? I can give you a more accurate quote! 💰";
-            } else if (lowerMessage.includes('schedule') || lowerMessage.includes('appointment') || lowerMessage.includes('book')) {
-                response = "Perfect! I can schedule you right now. I have availability: Tomorrow 9-11am, 2-4pm, or Thursday 10am-12pm. What works best for you? I'll send confirmation via text! 📅";
-            } else if (lowerMessage.includes('ac') || lowerMessage.includes('air') || lowerMessage.includes('cooling')) {
-                response = "AC issues are the worst! Is your system: 1) Not cooling at all, 2) Cooling poorly, 3) Making strange noises, or 4) Something else? I can diagnose the likely issue and get you scheduled for repair. Most AC problems are fixable same-day! ❄️";
-            } else if (lowerMessage.includes('heat') || lowerMessage.includes('furnace') || lowerMessage.includes('warm')) {
-                response = "Heating problems need quick attention! Is your furnace: 1) Not turning on, 2) Heating unevenly, 3) Making noise, or 4) Blowing cold air? Based on your answer, I can give you troubleshooting tips and schedule a tech if needed. 🔥";
-            } else if (lowerMessage.includes('demo') || lowerMessage.includes('test') || lowerMessage.includes('trial')) {
-                response = "You're experiencing our AI chat right now! This is exactly what your customers would see on your website. Pretty smart, right? Want to start your 14-day free trial? I can set that up instantly! 🚀";
+            if (type === 'user') {
+                messageDiv.style = `
+                    background: #ff6b35;
+                    color: white;
+                    padding: 12px;
+                    border-radius: 12px 12px 4px 12px;
+                    margin-bottom: 12px;
+                    margin-left: 50px;
+                    text-align: right;
+                `;
             } else {
-                const responses = [
-                    "I'm here to help with all your HVAC needs! Are you looking for emergency repair, routine maintenance, or a new system installation? 🔧",
-                    "As your 24/7 HVAC assistant, I can help schedule appointments, provide estimates, and answer technical questions. What can I do for you? ⚙️",
-                    "Great question! I'm trained on thousands of HVAC scenarios. Whether it's AC, heating, or air quality issues, I can help diagnose and solve your problem. What's going on? 🏠"
-                ];
-                response = responses[Math.floor(Math.random() * responses.length)];
+                messageDiv.style = `
+                    background: white;
+                    padding: 12px;
+                    border-radius: 12px 12px 12px 4px;
+                    margin-bottom: 12px;
+                    position: relative;
+                    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+                `;
+                text = '🤖 ' + text;
             }
             
-            // Add some personality occasionally
-            if (messageCount > 3 && Math.random() < 0.3) {
-                response += "\n\nBy the way, I never sleep! I'm here 24/7 to help your customers. Your competitors using basic contact forms are missing out! 😴";
+            messageDiv.textContent = text;
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            messageCount++;
+        },
+
+        showTyping: function() {
+            const messagesDiv = document.getElementById('hvac-chat-messages');
+            const typingDiv = document.createElement('div');
+            typingDiv.id = 'hvac-typing-indicator';
+            typingDiv.style = `
+                background: #f0f0f0;
+                padding: 12px;
+                border-radius: 12px 12px 12px 4px;
+                margin-bottom: 12px;
+                font-style: italic;
+                color: #999;
+            `;
+            typingDiv.textContent = '🤖 AI is typing...';
+            messagesDiv.appendChild(typingDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        },
+
+        removeTyping: function() {
+            const typingDiv = document.getElementById('hvac-typing-indicator');
+            if (typingDiv) {
+                typingDiv.remove();
             }
-            
-            addBotMessage(response);
-        }
-        
-        // Auto-open chat widget after 10 seconds for demo
-        setTimeout(() => {
-            if (!chatOpen) {
-                const chatButton = document.getElementById('chatButton');
-                chatButton.style.animation = 'pulse 1s ease-in-out 3';
-                
-                // Add notification badge
-                chatButton.innerHTML = '💬<span style="position: absolute; top: -5px; right: -5px; background: #ef4444; color: white; border-radius: 50%; width: 20px; height: 20px; font-size: 12px; display: flex; align-items: center; justify-content: center;">1</span>';
-                
-                setTimeout(() => {
-                    addBotMessage("👋 Hey there! I noticed you're checking out MissedHVAC.com. I'm powered by the same AI that your customers would interact with. Want to try asking me a question?");
-                    
-                    // Track auto message
-                    va('track', 'chat_auto_message_shown');
-                }, 1000);
-            }
-        }, 10000);
-        
-        // ROI Calculator
-        function calculateROI() {
-            const missedCalls = parseInt(document.getElementById('missedCalls').value) || 0;
-            const jobValue = parseInt(document.getElementById('jobValue').value) || 0;
-            const monthlyLost = missedCalls * 4 * jobValue;
-            document.getElementById('lostRevenue').textContent = '$' + monthlyLost.toLocaleString();
-            
-            // Track calculator usage
-            va('track', 'roi_calculated', {
-                missedCalls: missedCalls,
-                jobValue: jobValue,
-                monthlyLost: monthlyLost
+        },
+
+        sendToAI: function(message) {
+            // Connect to your REAL n8n webhook
+            fetch('https://oxendineleads.app.n8n.cloud/webhook-test/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    message: message,
+                    apiKey: 'demo-key'
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                this.removeTyping();
+                const aiResponse = data.response || "I'm sorry, I couldn't process your request right now. Please try again.";
+                this.addMessage(aiResponse, 'bot');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                this.removeTyping();
+                this.addMessage("I'm sorry, I'm having trouble connecting right now. Please try again in a moment.", 'bot');
             });
         }
-        
-        // FAQ Toggle Function
-        function toggleFAQ(element) {
-            const answer = element.nextElementSibling;
-            const toggle = element.querySelector('.faq-toggle');
-            const question = element.parentElement.dataset.question;
-            
-            if (answer.classList.contains('open')) {
-                answer.classList.remove('open');
-                toggle.textContent = '+';
-            } else {
-                // Close all other FAQs
-                document.querySelectorAll('.faq-answer.open').forEach(openAnswer => {
-                    openAnswer.classList.remove('open');
-                    openAnswer.previousElementSibling.querySelector('.faq-toggle').textContent = '+';
-                });
-                
-                answer.classList.add('open');
-                toggle.textContent = '−';
-                
-                // Track FAQ interaction
-                va('track', 'faq_opened', {question: question});
-            }
-        }
-        
-        // Initialize ROI Calculator
-        calculateROI();
-        
-        // Smooth scrolling
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-        
-        // Track scroll depth
-        let maxScroll = 0;
-        window.addEventListener('scroll', () => {
-            const scrollPercent = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
-            if (scrollPercent > maxScroll) {
-                maxScroll = scrollPercent;
-                if (maxScroll === 25 || maxScroll === 50 || maxScroll === 75 || maxScroll === 100) {
-                    va('track', 'scroll_depth', {percent: maxScroll});
-                }
-            }
-        });
-        
-        // Pre-trial form submission - direct to Stripe
-        async function submitTrialForm(event) {
-            event.preventDefault();
-            
-            const firstName = document.getElementById('firstName').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const button = event.target;
-            const originalText = button.textContent;
-            
-            // Validate inputs
-            if (!firstName || firstName.length < 2) {
-                alert('Please enter your first name');
-                document.getElementById('firstName').focus();
-                return;
-            }
-            
-            if (!email || !email.includes('@') || !email.includes('.')) {
-                alert('Please enter a valid business email address');
-                document.getElementById('email').focus();
-                return;
-            }
-            
-            // Show loading state
-            button.textContent = 'Redirecting to checkout...';
-            button.disabled = true;
-            
-            // Track the form submission
-            va('track', 'trial_form_submitted', {
-                firstName: firstName,
-                email: email,
-                plan: 'professional'
-            });
-            
-            try {
-                // Store user info for Stripe (if needed later)
-                sessionStorage.setItem('trial_user', JSON.stringify({
-                    firstName: firstName,
-                    email: email,
-                    timestamp: new Date().toISOString()
-                }));
-            } catch(e) {
-                // Ignore storage errors
-            }
-            
-            // DIRECT TO STRIPE - Replace with your actual Stripe Payment Link
-            const stripeCheckoutUrl = 'YOUR_STRIPE_PROFESSIONAL_CHECKOUT_URL';
-            
-            // Simulate brief loading for better UX
-            setTimeout(() => {
-                if (stripeCheckoutUrl && stripeCheckoutUrl !== 'YOUR_STRIPE_PROFESSIONAL_CHECKOUT_URL') {
-                    // Redirect to Stripe checkout
-                    window.location.href = stripeCheckoutUrl;
-                } else {
-                    // Stripe not configured yet - show message
-                    button.textContent = originalText;
-                    button.disabled = false;
-                    
-                    alert(`Thanks ${firstName}! Your trial is ready.\n\nStripe checkout is being configured. For now, please email us at:\n\nsupport@missedhvac.com\n\nInclude: "${firstName} - ${email} - Professional Plan Trial"\n\nWe'll have you set up within 24 hours!`);
-                }
-            }, 1500);
-        }
-        
-        // Remove the old complex functions since we're going direct to Stripe
-        function goToStripe(planName) {
-            // Scroll to signup form for plan selection
-            document.getElementById('signup').scrollIntoView({ behavior: 'smooth' });
-            
-            // Highlight the benefits of the selected plan
-            alert(`Great choice! The ${planName} plan offers excellent value.\n\nPlease fill out the form above to start your 14-day free trial with full ${planName} features.`);
-        }
-    </script>
-</body>
-</html>
+    };
+
+    // Initialize when page loads
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initWidget);
+    } else {
+        initWidget();
+    }
+
+})();
