@@ -6,34 +6,44 @@ class ActionProvider {
 
   // This function is called by the MessageParser
   handleUserMessage = async (message) => {
-    // The URL from your n8n Webhook node
-    const webhookUrl = 'https://oxendineleads.app.n8n.cloud/webhook-test/8aabe83c-43ba-4c2d-a411-8bc1255a8a5f';
-
+    // FIXED: Correct n8n webhook URL with proper ID
+    const webhookUrl = 'https://oxendineleads.app.n8n.cloud/webhook/38bab8c2-35b9-4f73-9d87-93f5eacd42e5';
+    
+    // FIXED: Include context in request body
     const requestBody = {
       message: message,
+      context: 'HVAC service website chat - help with heating, cooling, repairs, estimates, and scheduling'
     };
 
     try {
-      // Make the API call to our n8n workflow
+      // FIXED: Added Authorization header
       const response = await fetch(webhookUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': 'Bearer sk-test-missedhvac-20250726'
         },
         body: JSON.stringify(requestBody),
       });
 
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+
       const data = await response.json();
-
+      
+      // FIXED: Handle different possible response formats from n8n
+      const aiResponse = data.response || data.reply || data.message || 'Sorry, I received an empty response.';
+      
       // Get the AI's response from the n8n workflow
-      const botResponse = this.createChatBotMessage(data.reply);
-
+      const botResponse = this.createChatBotMessage(aiResponse);
+      
       // Add the AI's response to the chat
       this.addMessageToState(botResponse);
-
+      
     } catch (error) {
       console.error("Error connecting to the backend:", error);
-      const errorResponse = this.createChatBotMessage("Sorry, I'm having trouble connecting right now.");
+      const errorResponse = this.createChatBotMessage("I'm sorry, I'm having trouble connecting right now. Please try again in a moment.");
       this.addMessageToState(errorResponse);
     }
   };
