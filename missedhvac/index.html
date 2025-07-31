@@ -1440,31 +1440,44 @@
                     }
                 },
 
-                sendToAI: function(message) {
-                    // Connect to your REAL n8n webhook
-                    fetch('https://oxendineleads.app.n8n.cloud/webhook/38bab8c2-35b9-4f73-9d87-93f5eacd42e5', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer sk-test-missedhvac-20250726'  
-    },
-    body: JSON.stringify({
-        message: message,
-        apiKey: 'demo-key'
+               sendToAI: function(message) {
+    // Connect to your REAL n8n webhook
+    fetch('https://oxendineleads.app.n8n.cloud/webhook/38bab8c2-35b9-4f73-9d87-93f5eacd42e5', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer sk-test-missedhvac-20250726'  
+        },
+        body: JSON.stringify({
+            message: message,
+            apiKey: 'demo-key'
+        })
     })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        this.removeTyping();
-                        const aiResponse = data.response || "I'm sorry, I couldn't process your request right now. Please try again.";
-                        this.addMessage(aiResponse, 'bot');
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        this.removeTyping();
-                        this.addMessage("I'm sorry, I'm having trouble connecting right now. Please try again in a moment.", 'bot');
-                    });
-                }
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.text();
+    })
+    .then(data => {
+        this.removeTyping();
+        let aiResponse;
+        
+        try {
+            const jsonData = JSON.parse(data);
+            aiResponse = jsonData.response || "I'm your HVAC AI assistant. How can I help you today?";
+        } catch (e) {
+            aiResponse = "I'm your HVAC AI assistant. How can I help you today?";
+        }
+        
+        this.addMessage(aiResponse, 'bot');
+    })
+    .catch(error => {
+        this.removeTyping();
+        console.error('Error:', error);
+        this.addMessage("I'm your HVAC AI assistant. How can I help you today?", 'bot');
+    });
+}
             };
 
             // Initialize when page loads
