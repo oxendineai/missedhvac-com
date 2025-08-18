@@ -822,30 +822,37 @@
         </p>
             
             <form id="trial-form" style="margin-bottom: 2rem;">
-                <div class="form-container">
-                    <input type="text" 
-                           id="firstName" 
-                           name="firstName" 
-                           placeholder="First name" 
-                           required 
-                           class="email-input"
-                           style="width: 200px;" />
-                    <input type="email" 
-                           id="email" 
-                           name="email" 
-                           placeholder="Business email" 
-                           required 
-                           class="email-input"
-                           style="width: 250px;"
-                           onkeypress="if(event.key==='Enter') submitTrialForm(event)" />
-                    <button type="button" 
-                            onclick="submitTrialForm(event)" 
-                            class="cta-header" 
-                            style="padding: 1rem 2rem; font-size: 1rem; white-space: nowrap;">
-                        Start Free Trial →
-                    </button>
-                </div>
-            </form>
+    <div class="form-container">
+        <input type="text" 
+               id="firstName" 
+               name="firstName" 
+               placeholder="First name" 
+               required 
+               class="email-input"
+               style="width: 200px;" />
+        <input type="email" 
+               id="email" 
+               name="email" 
+               placeholder="Business email" 
+               required 
+               class="email-input"
+               style="width: 250px;" />
+        
+        <!-- NEW: Plan Selection -->
+        <select id="planSelect" style="width: 280px; padding: 15px; margin: 10px 0; border: 2px solid #ddd; border-radius: 5px; font-size: 16px;">
+            <option value="professional-annual">🌞 Annual Plan - Save $891!</option>
+            <option value="professional-quarterly">Quarterly Plan - Save $297</option>
+            <option value="professional-monthly">Monthly Plan</option>
+        </select>
+        
+        <button type="button" 
+                onclick="submitTrialForm(event)" 
+                class="cta-header" 
+                style="padding: 1rem 2rem; font-size: 1rem; white-space: nowrap;">
+            Start Free Trial →
+        </button>
+    </div>
+</form>
             
             <div class="benefits-grid">
                 <div class="benefit-item">
