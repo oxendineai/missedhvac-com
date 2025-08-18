@@ -1579,11 +1579,13 @@
         });
         
        // REAL TRIAL SIGNUP - Connected to n8n workflow
+// UPDATED TRIAL SIGNUP - With Plan Selection
 async function submitTrialForm(event) {
     event.preventDefault();
     
     const firstName = document.getElementById('firstName').value.trim();
     const email = document.getElementById('email').value.trim();
+    const selectedPlan = document.getElementById('planSelect').value;
     const button = event.target;
     const originalText = button.textContent;
     
@@ -1609,19 +1611,26 @@ async function submitTrialForm(event) {
         va('track', 'trial_form_submitted', {
             firstName: firstName,
             email: email,
-            plan: 'professional'
+            plan: selectedPlan
         });
     } catch(e) {
         // Ignore tracking errors
     }
+    
+    // Plan to Price ID mapping
+    const planToPriceId = {
+        'professional-annual': 'price_1Rw68MGHShCwUFVUQ07JhfcH',
+        'professional-quarterly': 'price_1Rw63ZGHShCwUFVUOhAOgiJC', // Use monthly ID, n8n will handle quarterly logic
+        'professional-monthly': 'price_1Rw63ZGHShCwUFVUOhAOgiJC'
+    };
     
     // Prepare data for n8n workflow
     const formData = {
         firstName: firstName,
         email: email,
         company: firstName + ' HVAC Company',
-        plan: 'professional-monthly',
-        priceId: 'price_1Rw63ZGHShCwUFVUOhAOgiJC'
+        plan: selectedPlan,
+        priceId: planToPriceId[selectedPlan]
     };
     
     try {
