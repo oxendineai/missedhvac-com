@@ -29,7 +29,7 @@
         "operatingSystem": "Web",
         "offers": {
             "@type": "Offer",
-            "price": "199",
+            "price": "197",
             "priceCurrency": "USD",
             "priceValidUntil": "2025-12-31"
         },
@@ -1704,7 +1704,7 @@ async function submitTrialForm(event) {
     
     const firstName = document.getElementById('firstName').value.trim();
     const email = document.getElementById('email').value.trim();
-    const selectedPlan = document.getElementById('planSelect').value;
+    
     const button = event.target;
     const originalText = button.textContent;
     
@@ -1737,19 +1737,22 @@ async function submitTrialForm(event) {
     }
     
     // Plan to Price ID mapping
-    const planToPriceId = {
-        'professional-annual': 'price_1Rw68MGHShCwUFVUQ07JhfcH',
-        'professional-quarterly': 'price_1Rw63ZGHShCwUFVUOhAOgiJC', // Use monthly ID, n8n will handle quarterly logic
-        'professional-monthly': 'price_1Rw63ZGHShCwUFVUOhAOgiJC'
-    };
+   const priceMap = {
+    'starter-monthly': 'price_1Rw5b7GHShCwUFVUV10tNieI',
+    'professional-monthly': 'price_1Rw63ZGHShCwUFVUOhAOgiJC',
+    'scale-monthly': 'price_1Rz09NGHShCwUFVUQyk4XwR6',
+    'starter-quarterly': 'price_1Rz0BJGHShCwUFVU9ybSEKvh',
+    'professional-quarterly': 'price_1Rz0CuGHShCwUFVUklQx620w',
+    'scale-quarterly': 'price_1Rz0ERGHShCwUFVU1uO8dTow'
+};
     
     // Prepare data for n8n workflow
     const formData = {
         firstName: firstName,
         email: email,
         company: firstName + ' HVAC Company',
-        plan: selectedPlan,
-        priceId: planToPriceId[selectedPlan]
+        plan: planKey,
+        priceId: priceMap[planKey]
     };
     
     try {
