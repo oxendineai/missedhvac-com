@@ -1014,6 +1014,14 @@ function toggleBilling(frequency) {
 }
 
 async function submitTrialForm() {
+    // Rate limiting security
+    const lastSubmit = localStorage.getItem('lastTrialSubmit');
+    if (lastSubmit && Date.now() - parseInt(lastSubmit) < 60000) {
+        alert('Please wait before submitting again');
+        return;
+    }
+    localStorage.setItem('lastTrialSubmit', Date.now().toString());
+    
     const firstName = document.getElementById('firstName').value.trim();
     const email = document.getElementById('email').value.trim();
     const button = document.getElementById('trial-submit-btn');
@@ -1042,6 +1050,7 @@ async function submitTrialForm() {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
+                apiKey: "hvac-trial-secure-2025",
                 firstName: firstName,
                 email: email,
                 company: firstName + ' HVAC Company',
@@ -1063,6 +1072,8 @@ async function submitTrialForm() {
         alert('Error creating trial. Please try again.');
     }
 }
+    
+    
 
 // Auto-select Professional plan on load
 window.addEventListener('load', () => {
