@@ -1023,20 +1023,18 @@ async function submitTrialForm() {
         return;
     }
     
-    // Show loading
     button.textContent = 'Creating your trial...';
     button.disabled = true;
     
     const planKey = selectedPlan + '-' + billingFrequency;
     
-    // Map to price IDs (you'll update these after creating Stripe products)
     const priceMap = {
-          'starter-monthly': 'price_1Rw5b7GHShCwUFVUV10tNieI',
-    'professional-monthly': 'price_1Rw63ZGHShCwUFVUOhAOgiJC',
-    'scale-monthly': 'price_1Rz09NGHShCwUFVUQyk4XwR6',
-    'starter-quarterly': 'price_1Rz0BJGHShCwUFVU9ybSEKvh',
-    'professional-quarterly': 'price_1Rz0CuGHShCwUFVUklQx620w',
-    'scale-quarterly': 'price_1Rz0ERGHShCwUFVU1uO8dTow'
+        'starter-monthly': 'price_1Rw5b7GHShCwUFVUV10tNieI',
+        'professional-monthly': 'price_1Rw63ZGHShCwUFVUOhAOgiJC',
+        'scale-monthly': 'price_1Rz09NGHShCwUFVUQyk4XwR6',
+        'starter-quarterly': 'price_1Rz0BJGHShCwUFVU9ybSEKvh',
+        'professional-quarterly': 'price_1Rz0CuGHShCwUFVUklQx620w',
+        'scale-quarterly': 'price_1Rz0ERGHShCwUFVU1uO8dTow'
     };
     
     try {
