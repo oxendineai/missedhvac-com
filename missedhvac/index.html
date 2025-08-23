@@ -1695,42 +1695,7 @@ window.addEventListener('load', () => {
             }
         });
         
-       // REAL TRIAL SIGNUP - Connected to n8n workflow
-// UPDATED TRIAL SIGNUP - With Plan Selection
-
-        // Send to n8n HVAC Trial Signup workflow
-        const response = await fetch('https://oxendineleads.app.n8n.cloud/webhook/hvac-trial-signup', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData)
-        });
-        
-        if (!response.ok) {
-            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-        }
-        
-        const result = await response.json();
-        
-        if (result.url) {
-            // Redirect to Stripe checkout
-            window.location.href = result.url;
-        } else {
-            throw new Error('No checkout URL received from workflow');
-        }
-        
-    } catch (error) {
-        console.error('Trial signup error:', error);
-        
-        // Reset button
-        button.textContent = originalText;
-        button.disabled = false;
-        
-        // Show user-friendly error
-        alert(`Sorry ${firstName}, there was an issue creating your trial. Please try again in a moment or email support@missedhvac.com`);
-    }
-}
+  
         
         // Remove the old complex functions since we're going direct to Stripe
         function goToStripe(planName) {
