@@ -890,29 +890,39 @@
             </div>
             <p style="color: #6b7280; font-size: 14px;">All plans include setup, training, and 30-day money-back guarantee</p>
         </div>
-
-        <!-- Trial Form -->
-        <div id="trial" style="max-width: 500px...">
-            <div id="plan-selected" style="background: #e8f5e9; border: 1px solid #4caf50; padding: 15px; border-radius: 8px; margin-bottom: 20px; display: none;">
-                <strong>Selected:</strong> <span id="selected-plan-name"></span> - <span id="selected-plan-price"></span>
-            </div>
-            
-            <form id="trial-form">
-                <div style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
-                    <input type="text" id="firstName" placeholder="First name" required style="flex: 1; min-width: 200px; padding: 15px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px;">
-                    <input type="email" id="email" placeholder="Business email" required style="flex: 1; min-width: 250px; padding: 15px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px;">
-                </div>
-                
-                <button type="button" onclick="submitTrialForm()" id="trial-submit-btn" style="width: 100%; background: #0d9488; color: white; padding: 18px; border: none; border-radius: 8px; font-weight: bold; font-size: 18px; cursor: pointer; margin-bottom: 15px;">
-                    Start Your Free Trial →
-                </button>
-                
-                <p style="color: #6b7280; font-size: 12px; margin: 0;">14 days completely free. Choose billing frequency in checkout. Cancel anytime.</p>
-            </form>
+<!-- Trial Form -->
+<div id="trial" style="max-width: 500px; margin: 0 auto; background: #f8f9fa; padding: 30px; border-radius: 12px; text-align: center;">
+    
+    <!-- ADD THIS GUIDANCE BLOCK HERE -->
+    <div style="background: #e8f5e9; border: 2px solid #22c55e; padding: 20px; border-radius: 12px; margin-bottom: 25px; text-align: center;">
+        <div style="font-size: 18px; font-weight: bold; color: #15803d; margin-bottom: 10px;">
+            ☝️ Choose Your Plan Above First
+        </div>
+        <div style="color: #166534; font-size: 14px; line-height: 1.4;">
+            Select <strong>Quarterly billing</strong> to waive the $297 setup fee and lock in 2025 pricing before September rate increase
         </div>
     </div>
+    
+    <!-- KEEP ALL EXISTING CODE BELOW UNCHANGED -->
+    <div id="plan-selected" style="background: #e8f5e9; border: 1px solid #4caf50; padding: 15px; border-radius: 8px; margin-bottom: 20px; display: none;">
+        <strong>Selected:</strong> <span id="selected-plan-name"></span> - <span id="selected-plan-price"></span>
+    </div>
+    
+    <form id="trial-form">
+        <div style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
+            <input type="text" id="firstName" placeholder="First name" required style="flex: 1; min-width: 200px; padding: 15px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px;">
+            <input type="email" id="email" placeholder="Business email" required style="flex: 1; min-width: 250px; padding: 15px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px;">
+        </div>
+        
+        <button type="button" onclick="submitTrialForm()" id="trial-submit-btn" style="width: 100%; background: #0d9488; color: white; padding: 18px; border: none; border-radius: 8px; font-weight: bold; font-size: 18px; cursor: pointer; margin-bottom: 15px;">
+            Start Your Free Trial →
+        </button>
+        
+        <p style="color: #6b7280; font-size: 12px; margin: 0;">14 days completely free. Choose billing frequency in checkout. Cancel anytime.</p>
+    </form>
+</div>
+</div>
 </section>
-
 <style>
 @keyframes pulse {
     0%, 100% { transform: scale(1); }
