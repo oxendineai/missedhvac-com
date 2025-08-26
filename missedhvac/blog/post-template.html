@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[POST_TITLE] | HVAC Expert Blog | MissedHVAC</title>
+    <meta name="description" content="[POST_DESCRIPTION]">
+    <meta name="keywords" content="[POST_KEYWORDS]">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="[POST_TITLE] | MissedHVAC Blog">
+    <meta property="og:description" content="[POST_DESCRIPTION]">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://www.missedhvac.com/blog/posts/[POST_URL]/">
+    
+    <!-- Article Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "[POST_TITLE]",
+      "description": "[POST_DESCRIPTION]",
+      "author": {
+        "@type": "Person",
+        "name": "Alexander Oxendine"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "MissedHVAC",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://www.missedhvac.com/logo.png"
+        }
+      },
+      "datePublished": "[POST_DATE]",
+      "dateModified": "[POST_DATE]"
+    }
+    </script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8fafc;
+        }
+        
+        /* Header matching main site */
+        .header {
+            background: linear-gradient(135deg, #0f766e 0%, #0d9488 100%);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+            color: white;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+        
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+        
+        .cta-button {
+            background: #f97316;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .cta-button:hover {
+            background: #ea580c;
+            transform: translateY(-1px);
+        }
+        
+        /* Breadcrumb */
+        .breadcrumb {
+            background: white;
+            padding: 1rem 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .breadcrumb-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .breadcrumb-nav {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+        
+        .breadcrumb-nav a {
+            color: #0d9488;
+            text-decoration: none;
+        }
+        
+        .breadcrumb-nav a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Main Content Layout */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 20px;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 3rem;
+        }
+        
+        /* Article */
+        .article {
+            background: white;
+            border-radius: 12px;
+            padding: 3rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .article-header {
+            margin-bottom: 3rem;
+            text-align: center;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 2rem;
+        }
+        
+        .article-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #1f2937;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+        
+        .article-meta {
+            color: #6b7280;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .article-intro {
+            font-size: 1.2rem;
+            color: #374151;
+            font-style: italic;
+            background: #f0fdfa;
+            padding: 1.5rem;
+            border-left: 4px solid #0d9488;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        /* Trial CTA - Top of Article */
+        .trial-cta-top {
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            margin: 2rem 0;
+        }
+        
+        .trial-cta-top h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .trial-cta-top p {
+            margin-bottom: 1.5rem;
+            opacity: 0.9;
+        }
+        
+        .trial-button {
+            background: white;
+            color: #f97316;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            transition: all 0.3s;
+        }
+        
+        .trial-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        /* Article Content Styling */
+        .article-content h2 {
+            color: #0f766e;
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin: 2.5rem 0 1rem 0;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #0d9488;
+        }
+        
+        .article-content h3 {
+            color: #374151;
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin: 2rem 0 1rem 0;
+        }
+        
+        .article-content h4 {
+            color: #374151;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 1.5rem 0 0.5rem 0;
+        }
+        
+        .article-content p {
+            margin-bottom: 1.5rem;
+            color: #374151;
+            font-size: 1.1rem;
+        }
+        
+        .article-content ul, .article-content ol {
+            margin: 1.5rem 0 1.5rem 2rem;
+            color: #374151;
+        }
+        
+        .article-content li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .article-content blockquote {
+            background: #f0fdfa;
+            border-left: 4px solid #0d9488;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 0 8px 8px 0;
+            font-style: italic;
+        }
+        
+        .article-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 2rem 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .article-content a {
+            color: #0d9488;
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-bottom-color 0.3s;
+        }
+        
+        .article-content a:hover {
+            border-bottom-color: #0d9488;
+        }
+        
+        /* Highlight Boxes */
+        .highlight-box {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .highlight-box.success {
+            background: #f0fdf4;
+            border-left-color: #22c55e;
+        }
+        
+        .highlight-box.info {
+            background: #eff6ff;
+            border-left-color: #3b82f6;
+        }
+        
+        /* Mid-Article CTA */
+        .trial-cta-mid {
+            background: #f0fdfa;
+            border: 2px solid #0d9488;
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            margin: 3rem 0;
+        }
+        
+        .trial-cta-mid h3 {
+            color: #0f766e;
+            margin-bottom: 1rem;
+        }
+        
+        .trial-cta-mid .trial-button {
+            background: #0d9488;
+            color: white;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        
+        .sidebar-widget {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .widget-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #0f766e;
+            margin-bottom: 1rem;
+        }
+        
+        .trial-widget {
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            color: white;
+            text-align: center;
+        }
+        
+        .trial-widget .widget-title {
+            color: white;
+        }
+        
+        .trial-description {
+            margin-bottom: 1.5rem;
+            opacity: 0.9;
+        }
+        
+        /* Related Posts */
+        .related-posts {
+            margin-top: 3rem;
+            padding-top: 3rem;
+            border-top: 2px solid #e5e7eb;
+        }
+        
+        .related-posts h3 {
+            color: #0f766e;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .related-post {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border-left: 4px solid #0d9488;
+        }
+        
+        .related-post h4 {
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+        
+        .related-post a {
+            color: #0d9488;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .related-post a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Footer */
+        .footer {
+            background: #1f2937;
+            color: white;
+            padding: 3rem 0;
+            margin-top: 4rem;
+        }
+        
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-links {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .main-content {
+                grid-template-columns: 1fr;
+                padding: 2rem 20px;
+            }
+            
+            .article {
+                padding: 2rem;
+            }
+            
+            .article-title {
+                font-size: 2rem;
+            }
+            
+            .article-content h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="/" class="logo">MissedHVAC</a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/blog/">Blog</a></li>
+                    <li><a href="/#features">Features</a></li>
+                    <li><a href="/#pricing">Pricing</a></li>
+                </ul>
+            </nav>
+            <a href="/#trial" class="cta-button">Start Free Trial</a>
+        </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <div class="breadcrumb-container">
+            <div class="breadcrumb-nav">
+                <a href="/">Home</a> > <a href="/blog/">Blog</a> > [POST_CATEGORY] > [POST_TITLE]
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Article -->
+        <article class="article">
+            <header class="article-header">
+                <h1 class="article-title">[POST_TITLE]</h1>
+                <div class="article-meta">
+                    Published on [POST_DATE] by Alexander Oxendine | Reading time: [READING_TIME] min
+                </div>
+                <div class="article-intro">
+                    [POST_INTRODUCTION_PARAGRAPH]
+                </div>
+            </header>
+
+            <!-- Top Article CTA -->
+            <div class="trial-cta-top">
+                <h3>🚀 Ready to Stop Losing HVAC Leads?</h3>
+                <p>See how our AI chatbot captures 73% more leads for contractors like you</p>
+                <a href="/#trial" class="trial-button">Start Free 14-Day Trial</a>
+            </div>
+
+            <div class="article-content">
+                
+                <!-- REPLACE THIS SECTION WITH YOUR ACTUAL BLOG CONTENT -->
+                
+                <h2>[MAIN_HEADING_1]</h2>
+                <p>[PARAGRAPH_CONTENT]</p>
+                
+                <h3>[SUB_HEADING_1]</h3>
+                <p>[PARAGRAPH_CONTENT]</p>
+                
+                <ul>
+                    <li>[BULLET_POINT_1]</li>
+                    <li>[BULLET_POINT_2]</li>
+                    <li>[BULLET_POINT_3]</li>
+                </ul>
+                
+                <blockquote>
+                    "[IMPORTANT_QUOTE_OR_STATISTIC]"
+                </blockquote>
+                
+                <div class="highlight-box success">
+                    <strong>Pro Tip:</strong> [HELPFUL_TIP_FOR_HVAC_CONTRACTORS]
+                </div>
+
+                <!-- Mid-Article CTA -->
+                <div class="trial-cta-mid">
+                    <h3>Ready to Implement This Strategy?</h3>
+                    <p>Our AI chatbot makes it easy to capture every lead, 24/7</p>
+                    <a href="/#trial" class="trial-button">See It In Action</a>
+                </div>
+
+                <h2>[MAIN_HEADING_2]</h2>
+                <p>[PARAGRAPH_CONTENT]</p>
+                
+                <h3>[SUB_HEADING_2]</h3>
+                <p>[PARAGRAPH_CONTENT]</p>
+                
+                <div class="highlight-box info">
+                    <strong>Key Takeaway:</strong> [MAIN_LESSON_FROM_ARTICLE]
+                </div>
+                
+                <!-- END CONTENT REPLACEMENT SECTION -->
+
+            </div>
+
+            <!-- Related Posts -->
+            <div class="related-posts">
+                <h3>Related Articles</h3>
+                <div class="related-post">
+                    <h4><a href="/blog/posts/hvac-live-chat-vs-ai-chatbot/">HVAC Website Live Chat vs AI Chat Widgets</a></h4>
+                    <p>Compare human operators vs AI assistants for lead conversion</p>
+                </div>
+                <div class="related-post">
+                    <h4><a href="/blog/posts/capture-after-hours-hvac-leads/">How to Capture After-Hours HVAC Leads</a></h4>
+                    <p>Stop losing $6K/month in late-night website visitors</p>
+                </div>
+            </div>
+        </article>
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <!-- Trial CTA Widget -->
+            <div class="sidebar-widget trial-widget">
+                <h3 class="widget-title">🚀 Stop Losing Leads Today</h3>
+                <p class="trial-description">Join 500+ HVAC contractors capturing 73% more leads with AI chat widgets</p>
+                <a href="/#trial" class="trial-button">Start Free 14-Day Trial</a>
+            </div>
+
+            <!-- Author Widget -->
+            <div class="sidebar-widget">
+                <h3 class="widget-title">About the Author</h3>
+                <p><strong>Alexander Oxendine</strong> is the founder of MissedHVAC and has helped 500+ contractors capture millions in additional revenue through AI automation.</p>
+                <p style="margin-top: 1rem;"><a href="mailto:alexander@missedhvac.com" style="color: #0d9488;">Contact Alexander</a></p>
+            </div>
+
+            <!-- Newsletter Widget -->
+            <div class="sidebar-widget">
+                <h3 class="widget-title">📧 Weekly HVAC Tips</h3>
+                <p>Get exclusive lead generation strategies delivered every Tuesday.</p>
+                <div style="margin-top: 1rem;">
+                    <input type="email" placeholder="Your email address" style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 4px; margin-bottom: 0.5rem;">
+                    <button style="width: 100%; background: #0d9488; color: white; padding: 0.75rem; border: none; border-radius: 4px; font-weight: 600; cursor: pointer;">Subscribe</button>
+                </div>
+            </div>
+
+            <!-- Table of Contents -->
+            <div class="sidebar-widget">
+                <h3 class="widget-title">📋 In This Article</h3>
+                <ul style="list-style: none; padding-left: 0;">
+                    <li style="margin-bottom: 0.5rem;"><a href="#[SECTION_1]" style="color: #374151; text-decoration: none;">[MAIN_HEADING_1]</a></li>
+                    <li style="margin-bottom: 0.5rem;"><a href="#[SECTION_2]" style="color: #374151; text-decoration: none;">[MAIN_HEADING_2]</a></li>
+                    <li style="margin-bottom: 0.5rem;"><a href="#[SECTION_3]" style="color: #374151; text-decoration: none;">[MAIN_HEADING_3]</a></li>
+                </ul>
+            </div>
+        </aside>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <p>&copy; 2025 MissedHVAC. All rights reserved. | <a href="/#privacy" style="color: #9ca3af;">Privacy Policy</a> | <a href="/#terms" style="color: #9ca3af;">Terms of Service</a></p>
+            <p style="margin-top: 1rem; color: #6b7280;">Stop losing leads. Start converting more customers.</p>
+        </div>
+    </footer>
+</body>
+</html>
