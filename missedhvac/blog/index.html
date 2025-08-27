@@ -521,12 +521,333 @@
             <p style="margin-top: 1rem; color: #6b7280;">Stop losing leads. Start converting more customers.</p>
         </div>
     </footer>
-    
- <script src="https://missedhvac.com/packages/widget/widget.js"
-        data-api-key="sk-test-missedhvac-20250726"
-        data-customer-id="missedhvac-blog"
-        data-company-name="MissedHVAC"
-        data-api-endpoint="https://oxendineleads.app.n8n.cloud/webhook/chat-starter">
+    <!-- Original Working HVAC Chat Widget -->
+<script>
+    // HVAC AI Assistant Widget - Complete Fixed Version
+    (function() {
+        'use strict';
+        
+        let chatOpen = false;
+        let messageCount = 0;
+
+        // Initialize the widget
+        function initWidget() {
+            // Create the chat widget HTML
+            const widgetHTML = `
+                <div id="hvac-chat-widget" style="position: fixed; bottom: 20px; right: 20px; font-family: Arial, sans-serif; z-index: 10000;">
+                    <!-- Chat Button -->
+                    <div id="hvac-chat-button" onclick="window.HVACWidget.toggle()" style="
+                        width: 60px;
+                        height: 60px;
+                        background: linear-gradient(45deg, #ff6b35, #ff8c42);
+                        color: white;
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        cursor: pointer;
+                        box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+                        font-weight: bold;
+                        font-size: 24px;
+                        transition: all 0.3s ease;
+                        position: relative;
+                    ">
+                        💬
+                    </div>
+
+                    <!-- Chat Window -->
+                    <div id="hvac-chat-window" style="
+                        position: absolute;
+                        bottom: 70px;
+                        right: 0;
+                        width: 350px;
+                        height: 500px;
+                        background: white;
+                        border-radius: 12px;
+                        box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+                        display: none;
+                        flex-direction: column;
+                        overflow: hidden;
+                    ">
+                        <!-- Header -->
+                        <div style="
+                            background: linear-gradient(45deg, #ff6b35, #ff8c42);
+                            color: white;
+                            padding: 16px;
+                            text-align: center;
+                        ">
+                            <div style="font-weight: bold; font-size: 16px;">HVAC AI Assistant</div>
+                            <div style="font-size: 12px; opacity: 0.9;">Online • Powered by MissedHVAC.com</div>
+                        </div>
+
+                        <!-- Messages -->
+                        <div id="hvac-chat-messages" style="
+                            flex: 1;
+                            padding: 16px;
+                            overflow-y: auto;
+                            background: #f8f9fa;
+                        ">
+                            <div style="
+                                background: white;
+                                padding: 12px;
+                                border-radius: 12px 12px 12px 4px;
+                                margin-bottom: 12px;
+                                position: relative;
+                                box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+                            ">
+                                🤖 Hi! I'm your AI assistant. I help HVAC customers 24/7 with real-time answers from our knowledge base. How can I help you today?
+                            </div>
+                        </div>
+
+                        <!-- Input Area -->
+                        <div style="padding: 16px; background: white; border-top: 1px solid #eee;">
+                            <div style="display: flex; gap: 10px; margin-bottom: 12px;">
+                                <input type="text" id="hvac-chat-input" placeholder="Type your message..." style="
+                                    flex: 1;
+                                    padding: 12px;
+                                    border: 1px solid #ddd;
+                                    border-radius: 20px;
+                                    outline: none;
+                                    font-size: 14px;
+                                ">
+                                <button onclick="window.HVACWidget.sendMessage()" style="
+                                    padding: 12px 20px;
+                                    background: linear-gradient(45deg, #ff6b35, #ff8c42);
+                                    color: white;
+                                    border: none;
+                                    border-radius: 20px;
+                                    cursor: pointer;
+                                    font-weight: bold;
+                                ">Send</button>
+                            </div>
+                            
+                            <!-- Quick Replies -->
+                            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                                <button onclick="window.HVACWidget.sendQuickReply('Emergency AC repair')" class="hvac-quick-reply">Emergency AC repair</button>
+                                <button onclick="window.HVACWidget.sendQuickReply('Get estimate')" class="hvac-quick-reply">Get estimate</button>
+                                <button onclick="window.HVACWidget.sendQuickReply('Schedule service')" class="hvac-quick-reply">Schedule service</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Add CSS
+            const css = `
+                .hvac-quick-reply {
+                    background: #f3f4f6;
+                    border: 1px solid #d1d5db;
+                    padding: 6px 12px;
+                    border-radius: 16px;
+                    font-size: 12px;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                }
+                
+                .hvac-quick-reply:hover {
+                    background: #ff6b35;
+                    color: white;
+                    border-color: #ff6b35;
+                }
+
+                @keyframes pulse {
+                    0% { box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3); }
+                    50% { box-shadow: 0 4px 20px rgba(255, 107, 53, 0.6); }
+                    100% { box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3); }
+                }
+
+                @media (max-width: 480px) {
+                    #hvac-chat-window {
+                        position: fixed !important;
+                        top: 0 !important;
+                        left: 0 !important;
+                        right: 0 !important;
+                        bottom: 0 !important;
+                        width: 100% !important;
+                        height: 100% !important;
+                        border-radius: 0 !important;
+                    }
+                    
+                    #hvac-chat-button {
+                        bottom: 20px !important;
+                        right: 20px !important;
+                    }
+                }
+            `;
+
+            // Add CSS to page
+            const style = document.createElement('style');
+            style.textContent = css;
+            document.head.appendChild(style);
+
+            // Add widget to page
+            document.body.insertAdjacentHTML('beforeend', widgetHTML);
+
+            // Add enter key support
+            document.getElementById('hvac-chat-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    window.HVACWidget.sendMessage();
+                }
+            });
+
+            // Auto-show notification after 10 seconds
+            setTimeout(() => {
+                if (!chatOpen) {
+                    const button = document.getElementById('hvac-chat-button');
+                    button.style.animation = 'pulse 1s ease-in-out 3';
+                    button.innerHTML = '💬<span style="position: absolute; top: -5px; right: -5px; background: red; color: white; border-radius: 50%; width: 20px; height: 20px; font-size: 12px; display: flex; align-items: center; justify-content: center;">1</span>';
+                }
+            }, 10000);
+        }
+
+        // Widget functions
+        window.HVACWidget = {
+            toggle: function() {
+                const chatWindow = document.getElementById('hvac-chat-window');
+                const chatButton = document.getElementById('hvac-chat-button');
+                
+                chatOpen = !chatOpen;
+                
+                if (chatOpen) {
+                    chatWindow.style.display = 'flex';
+                    chatButton.innerHTML = '✕';
+                    chatButton.style.background = '#dc2626';
+                    
+                    // Show welcome message for first-time users
+                    if (messageCount === 1) {
+                        setTimeout(() => {
+                            this.addMessage("I see you're interested in our AI chat! I'm connected to our live knowledge base and can answer real questions about HVAC services. Try asking me anything! 😊", 'bot');
+                        }, 2000);
+                    }
+                } else {
+                    chatWindow.style.display = 'none';
+                    chatButton.innerHTML = '💬';
+                    chatButton.style.background = 'linear-gradient(45deg, #ff6b35, #ff8c42)';
+                }
+            },
+
+            sendMessage: function() {
+                const input = document.getElementById('hvac-chat-input');
+                const message = input.value.trim();
+                
+                if (!message) return;
+                
+                this.addMessage(message, 'user');
+                input.value = '';
+                this.showTyping();
+                this.sendToAI(message);
+            },
+
+            sendQuickReply: function(message) {
+                this.addMessage(message, 'user');
+                this.showTyping();
+                this.sendToAI(message);
+            },
+
+            addMessage: function(text, type) {
+                const messagesDiv = document.getElementById('hvac-chat-messages');
+                const messageDiv = document.createElement('div');
+                
+                if (type === 'user') {
+                    messageDiv.style = `
+                        background: #ff6b35;
+                        color: white;
+                        padding: 12px;
+                        border-radius: 12px 12px 4px 12px;
+                        margin-bottom: 12px;
+                        margin-left: 50px;
+                        text-align: right;
+                    `;
+                } else {
+                    messageDiv.style = `
+                        background: white;
+                        padding: 12px;
+                        border-radius: 12px 12px 12px 4px;
+                        margin-bottom: 12px;
+                        position: relative;
+                        box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+                    `;
+                    text = '🤖 ' + text;
+                }
+                
+                messageDiv.textContent = text;
+                messagesDiv.appendChild(messageDiv);
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+                messageCount++;
+            },
+
+            showTyping: function() {
+                const messagesDiv = document.getElementById('hvac-chat-messages');
+                const typingDiv = document.createElement('div');
+                typingDiv.id = 'hvac-typing-indicator';
+                typingDiv.style = `
+                    background: #f0f0f0;
+                    padding: 12px;
+                    border-radius: 12px 12px 12px 4px;
+                    margin-bottom: 12px;
+                    font-style: italic;
+                    color: #999;
+                `;
+                typingDiv.textContent = '🤖 AI is typing...';
+                messagesDiv.appendChild(typingDiv);
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            },
+
+            removeTyping: function() {
+                const typingDiv = document.getElementById('hvac-typing-indicator');
+                if (typingDiv) {
+                    typingDiv.remove();
+                }
+            },
+
+           sendToAI: function(message) {
+    // Connect to your REAL n8n webhook
+    fetch('https://oxendineleads.app.n8n.cloud/webhook/chat-starter', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer sk-test-missedhvac-20250726'  
+        },
+        body: JSON.stringify({
+            message: message,
+            apiKey: 'demo-key'
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.text();
+    })
+    .then(data => {
+        this.removeTyping();
+        let aiResponse;
+        
+        try {
+            const jsonData = JSON.parse(data);
+            aiResponse = jsonData.response || "I'm your HVAC AI assistant. How can I help you today?";
+        } catch (e) {
+            aiResponse = "I'm your HVAC AI assistant. How can I help you today?";
+        }
+        
+        this.addMessage(aiResponse, 'bot');
+    })
+    .catch(error => {
+        this.removeTyping();
+        console.error('Error:', error);
+        this.addMessage("I'm your HVAC AI assistant. How can I help you today?", 'bot');
+    });
+}
+        };
+
+        // Initialize when page loads
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initWidget);
+        } else {
+            initWidget();
+        }
+
+    })();
 </script>
     
 </body>
