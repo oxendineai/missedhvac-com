@@ -108,6 +108,25 @@
             opacity: 0.9;
             margin-bottom: 2rem;
         }
+
+        .hero-cta {
+            background: #f97316;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            display: inline-block;
+            transition: all 0.3s;
+            margin-top: 1rem;
+        }
+
+        .hero-cta:hover {
+            background: #ea580c;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
         
         /* Main Content */
         .main-content {
@@ -211,188 +230,43 @@
             background: #0d9488;
             color: white;
         }
-        
-        /* Latest Articles Section */
-        .latest-articles {
-            margin: 3rem 0;
-            padding: 0 2rem;
-        }
 
-        .latest-articles .latest-title {
+        /* Bottom CTA Section */
+        .bottom-cta {
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            color: white;
+            padding: 3rem 2rem;
             text-align: center;
-            font-size: 2rem;
-            color: #2c3e50;
-            margin-bottom: 2rem;
-            border-bottom: 3px solid #0d9488;
-            padding-bottom: 0.5rem;
-            display: block;
-            width: 100%;
-        }
-
-        .latest-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        .latest-card {
-            background: white;
             border-radius: 12px;
-            padding: 2rem;
-            box-shadow: 0 8px 25px rgba(13, 148, 136, 0.1);
-            border: 2px solid #e8f8f5;
-            transition: all 0.3s ease;
-            position: relative;
+            margin: 3rem 0;
         }
 
-        .latest-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 35px rgba(13, 148, 136, 0.2);
-            border-color: #0d9488;
-        }
-
-        .article-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .bottom-cta h3 {
+            font-size: 1.8rem;
             margin-bottom: 1rem;
-            font-size: 0.85rem;
         }
 
-        .category {
-            background: #0d9488;
-            color: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-weight: bold;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+        .bottom-cta p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
         }
 
-        .read-time {
-            color: #6b7280;
-            font-style: italic;
-        }
-
-        .latest-card h4 {
-            font-size: 1.25rem;
-            color: #2c3e50;
-            margin-bottom: 1rem;
-            line-height: 1.3;
-            font-weight: bold;
-        }
-
-        .latest-card p {
-            color: #4b5563;
-            line-height: 1.6;
-            margin-bottom: 1.5rem;
-        }
-
-        .article-stats {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
-        }
-
-        .stat {
-            background: #f0fdfa;
-            color: #0d9488;
-            padding: 0.25rem 0.5rem;
-            border-radius: 6px;
-            font-size: 0.75rem;
-            font-weight: bold;
-            border: 1px solid #a7f3d0;
-        }
-
-        .read-article-btn {
-            display: inline-block;
-            background: linear-gradient(45deg, #0d9488, #14b8a6);
-            color: white;
-            padding: 0.75rem 1.5rem;
+        .bottom-cta-button {
+            background: white;
+            color: #f97316;
+            padding: 1rem 2rem;
+            border-radius: 8px;
             text-decoration: none;
-            border-radius: 8px;
             font-weight: bold;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .read-article-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(13, 148, 136, 0.4);
-            background: linear-gradient(45deg, #0f766e, #0d9488);
-        }
-
-        .read-article-btn::before {
-            content: "→";
-            margin-left: 0.5rem;
-            transition: transform 0.3s ease;
-        }
-
-        .read-article-btn:hover::before {
-            transform: translateX(3px);
-        }
-        
-        /* Coming Soon Posts */
-        .coming-soon-posts {
-            margin-top: 4rem;
-            padding-top: 2rem;
-            border-top: 2px dashed #e5e7eb;
-        }
-        
-        .coming-soon-title {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #6b7280;
-            margin-bottom: 1rem;
-            text-align: center;
-        }
-        
-        .coming-soon-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1rem;
-        }
-        
-        .coming-soon-card {
-            background: #f8fafc;
-            border: 2px dashed #d1d5db;
-            border-radius: 8px;
-            padding: 1.5rem;
-            text-align: center;
-        }
-        
-        .coming-soon-card h4 {
-            color: #6b7280;
-            margin-bottom: 0.5rem;
-        }
-        
-        .coming-soon-card p {
-            color: #9ca3af;
-            font-size: 0.9rem;
-        }
-        
-        .notify-button {
-            background: #e5e7eb;
-            color: #6b7280;
-            padding: 0.5rem 1rem;
-            border: none;
-            border-radius: 6px;
-            font-weight: 600;
-            margin-top: 1rem;
-            cursor: pointer;
+            font-size: 1.1rem;
+            display: inline-block;
             transition: all 0.3s;
-            text-decoration: none;
-            display: inline-block;
         }
-        
-        .notify-button:hover {
-            background: #d1d5db;
+
+        .bottom-cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
         }
         
         /* Sidebar */
@@ -463,7 +337,20 @@
             font-size: 0.9rem;
         }
 
-        
+        /* Stats Widget */
+        .stats-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .stats-list li {
+            margin-bottom: 1rem;
+            color: #374151;
+        }
+
+        .stats-list strong {
+            color: #0d9488;
+        }
         
         /* Footer */
         .footer {
@@ -504,36 +391,13 @@
             .post-grid {
                 grid-template-columns: 1fr;
             }
-            
-            .coming-soon-grid {
-                grid-template-columns: 1fr;
+
+            .bottom-cta {
+                padding: 2rem 1rem;
             }
-            
-            .latest-articles {
-                padding: 0 1rem;
-            }
-            
-            .latest-articles .latest-title {
+
+            .bottom-cta h3 {
                 font-size: 1.5rem;
-            }
-            
-            .latest-grid {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-            }
-            
-            .latest-card {
-                padding: 1.5rem;
-            }
-            
-            .article-stats {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-            
-            .stat {
-                display: inline-block;
-                margin-right: 0.5rem;
             }
         }
     </style>
@@ -560,6 +424,7 @@
         <div class="hero-container">
             <h1 class="hero-title">HVAC Expert Blog</h1>
             <p class="hero-subtitle">Lead generation strategies, AI chatbot tips, and proven techniques to grow your HVAC business</p>
+            <a href="/#trial" class="hero-cta">Start Capturing More Leads Today</a>
         </div>
     </section>
 
@@ -604,57 +469,11 @@
                 </article>
             </div>
 
-            <!-- Latest Articles Section -->
-            <div class="latest-articles">
-                <h3 class="latest-title">Featured Expert Content</h3>
-                <div class="latest-grid">
-                    <!-- Article 1: HVAC Chatbot Software -->
-                    <div class="latest-card">
-                        <div class="article-meta">
-                            <span class="category">HVAC Technology</span>
-                            <span class="read-time">12 min read</span>
-                        </div>
-                        <h4>Best HVAC Chatbot Software for Contractors 2025</h4>
-                        <p>Complete buyer's guide to HVAC chatbot software. Compare features, pricing, and ROI data from 15+ platforms to find the perfect solution for your business.</p>
-                        <div class="article-stats">
-                            <span class="stat">4,200+ monthly searches</span>
-                            <span class="stat">Featured comparison table</span>
-                        </div>
-                        <a href="/blog/posts/hvac-chatbot-software-2025/" class="read-article-btn">Read Full Guide</a>
-                    </div>
-
-                    <!-- Article 2: Live Chat vs AI -->
-                    <div class="latest-card">
-                        <div class="article-meta">
-                            <span class="category">Lead Generation</span>
-                            <span class="read-time">8 min read</span>
-                        </div>
-                        <h4>HVAC Live Chat vs AI Chatbots: Which Captures More Leads?</h4>
-                        <p>Data-driven comparison of live chat vs AI chatbots for HVAC contractors. See real ROI numbers and why 87% switched to AI chat for 24/7 lead capture.</p>
-                        <div class="article-stats">
-                            <span class="stat">340% more leads with AI</span>
-                            <span class="stat">Real case studies</span>
-                        </div>
-                        <a href="/blog/posts/hvac-live-chat-vs-ai-chatbots/" class="read-article-btn">Read Comparison</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Coming Soon Section -->
-            <div class="coming-soon-posts">
-                <h3 class="coming-soon-title">📝 More Expert Content Coming Soon</h3>
-                <div class="coming-soon-grid">
-                    <div class="coming-soon-card">
-                        <h4>How to Capture After-Hours HVAC Leads</h4>
-                        <p>Stop losing $6K/month in late-night website visitors</p>
-                        <button class="notify-button">Notify Me</button>
-                    </div>
-                    <div class="coming-soon-card">
-                        <h4>7 Signs Your HVAC Website Isn't Converting</h4>
-                        <p>Identify and fix conversion killers costing you leads</p>
-                        <button class="notify-button">Notify Me</button>
-                    </div>
-                </div>
+            <!-- Bottom CTA -->
+            <div class="bottom-cta">
+                <h3>Ready to Stop Losing Leads?</h3>
+                <p>Join 500+ HVAC contractors capturing 73% more leads with AI chat widgets. Start your free trial today.</p>
+                <a href="/#trial" class="bottom-cta-button">Start Free 14-Day Trial</a>
             </div>
         </section>
 
@@ -662,7 +481,7 @@
         <aside class="sidebar">
             <!-- Trial CTA Widget -->
             <div class="sidebar-widget trial-widget">
-                <h3 class="widget-title">🚀 Stop Losing Leads Today</h3>
+                <h3 class="widget-title">Stop Losing Leads Today</h3>
                 <p class="trial-description">Join 500+ HVAC contractors capturing 73% more leads with AI chat widgets</p>
                 <a href="/#trial" class="trial-button">Start Free 14-Day Trial</a>
             </div>
@@ -671,35 +490,25 @@
             <div class="sidebar-widget">
                 <h3 class="widget-title">Blog Categories</h3>
                 <ul class="categories-list">
-    <li>HVAC Chatbots <span>(2)</span></li>
-    <li>Lead Generation <span>(1)</span></li>
-    <li>Website Optimization <span>(0)</span></li>
-    <li>Business Growth <span>(0)</span></li>
-    <li>AI Automation <span>(0)</span></li>
-</ul>
+                    <li>HVAC Chatbots <span>(2)</span></li>
+                    <li>Lead Generation <span>(1)</span></li>
+                    <li>Website Optimization <span>(0)</span></li>
+                    <li>Business Growth <span>(0)</span></li>
+                    <li>AI Automation <span>(0)</span></li>
+                </ul>
                 <p style="margin-top: 1rem; color: #6b7280; font-size: 0.9rem; text-align: center;">
                     <em>New content published weekly</em>
                 </p>
             </div>
 
-            <!-- Newsletter Widget -->
-            <div class="sidebar-widget">
-                <h3 class="widget-title">📧 Weekly HVAC Tips</h3>
-                <p>Get exclusive lead generation strategies delivered to your inbox every Tuesday.</p>
-                <div style="margin-top: 1rem;">
-                    <input type="email" placeholder="Your email address" style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 4px; margin-bottom: 0.5rem;">
-                    <button style="width: 100%; background: #0d9488; color: white; padding: 0.75rem; border: none; border-radius: 4px; font-weight: 600; cursor: pointer;">Subscribe Free</button>
-                </div>
-            </div>
-
             <!-- Stats Widget -->
             <div class="sidebar-widget">
-                <h3 class="widget-title">📊 By the Numbers</h3>
-                <ul style="list-style: none; padding: 0;">
-                    <li style="margin-bottom: 0.5rem;">💰 Avg. revenue increase: <strong>$6,120/month</strong></li>
-                    <li style="margin-bottom: 0.5rem;">📈 Avg. conversion improvement: <strong>+6.2%</strong></li>
-                    <li style="margin-bottom: 0.5rem;">👥 Contractors served: <strong>500+</strong></li>
-                    <li style="margin-bottom: 0.5rem;">🎯 Setup time: <strong>5 minutes</strong></li>
+                <h3 class="widget-title">By the Numbers</h3>
+                <ul class="stats-list">
+                    <li>💰 Avg. revenue increase: <strong>$6,120/month</strong></li>
+                    <li>📈 Avg. conversion improvement: <strong>+6.2%</strong></li>
+                    <li>👥 Contractors served: <strong>500+</strong></li>
+                    <li>🎯 Setup time: <strong>5 minutes</strong></li>
                 </ul>
             </div>
         </aside>
